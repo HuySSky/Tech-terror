@@ -1,0 +1,8 @@
+{
+  "name": "Billie Jean (Live) - 1983",
+  "artist": "Michael Jackson",
+  "bpm": 117,
+  "timeSignature": [4, 4],
+  "previewStart": 0.0,
+  "scrollSpeed": { "easy": 1.0, "medium": 1.3, "hard": 1.6 }
+}
