@@ -15,16 +15,19 @@
 
 ## 0. Development workflow
 
-1. **Design** — module architecture, system behavior/interactions, and objects.
-2. **Review** — review understanding and discuss technical choices with the owner.
-3. **Record** — record approved decisions here and create the implementation pipeline.
-4. **Implement and test incrementally** — each module has an objective, scope, completion criteria, and tests (see §10).
+1. **Design** — continue discussing the architecture, module responsibilities, system behavior/interactions, and objects. Architecture design is still in progress.
+2. **Review** — check the interpretation against the supplied design material and discuss technical choices with the owner.
+3. **Record** — record only owner-approved decisions. Keep proposals, assumptions, and unresolved questions visibly separate.
+4. **Plan implementation** — define the objective, scope, dependencies, completion criteria, and tests for a small task.
+5. **Implement incrementally** — proceed only after the relevant design and task scope are approved (see §10 for the proposed pipeline).
 
 Rules:
-- Significant tasks need an implementation plan and owner approval before coding.
-- Small tasks keep planning brief.
-- Report only build/test results actually verified.
-- Conflicts between code and this specification are reported, not silently resolved.
+- Significant design or implementation tasks require owner review and approval before coding.
+- Do not treat the proposed pipeline in §10 as an approved schedule.
+- Small tasks can use brief planning, but must still respect confirmed requirements and unresolved dependencies.
+- The owner performs local build/runtime verification. Do not claim compilation or runtime success unless the owner reports it.
+- Conflicts between source documents, code, and this specification must be reported with the conflicting statements; do not silently resolve them.
+- Do not fill gaps in the architecture by inferring class boundaries, ownership, interfaces, or data flow.
 
 ---
 
@@ -95,9 +98,11 @@ Windows are to be tuned with feedback from drummers and by comparison with other
 
 ### 2.4 Scoring and health
 
-Hardcoded defaults (tune via playtests):
+Initial defaults recorded in the source design (provisional; tune via playtests):
 - `point = 100`
 - `healPoint = 10`
+
+These are starting values, not owner-confirmed final constants. See §8.8. Do not silently treat them as immutable values.
 
 | Rating | point | healPoint |
 |---|---:|---:|
@@ -317,17 +322,19 @@ Column rule as written in the source:
 
 ## 5. Data and persistence
 
-### 5.1 Confirmed
+### 5.1 Recorded data requirements and conventions
+
+The following file/data conventions are recorded in the supplied design material:
 
 - `assets/songs/songs.txt` lists song names (currently: `Billie Jean`).
 - Each song folder is `assets/songs/[song_name]/`.
-- Each song folder contains:
+- Each song folder is intended to contain:
   - `[song_name]_data.json`
   - charts (one per difficulty)
   - audio
   - images
   - other related files as needed
-- Existing `Billie Jean_data.json` fields:
+- The existing `Billie Jean_data.json` contains these fields:
   - `name`
   - `artist`
   - `bpm`
@@ -337,26 +344,28 @@ Column rule as written in the source:
 - A chart has multiple lanes.
 - Each lane stores timing values for its notes.
 - Each lane has a key assigned by the designer.
-- Persistent data (level/editor saves, volume, player results) uses HaxeFlixel `FlxSave`.
-- `Config.hx` is unnecessary; the owner deletes it manually. Nothing may depend on it.
+- Volume settings are intended to persist via HaxeFlixel `FlxSave`.
+- Player results are required to be saved, but their persistence mechanism is not confirmed here.
+- Editor/level chart persistence and the relationship between shipped JSON charts and saved charts remain unresolved; see §8.1–2 and §8.16.
+- `Config.hx` is unnecessary; the owner plans to delete it manually. Nothing may depend on it.
 
 ### 5.2 Unresolved
 
-See §8 for exact schemas, filenames, formats, and the relationship between `FlxSave` and JSON.
+Exact chart schemas, filenames, formats, audio/image conventions, Editor-save behavior, and persistence mechanisms remain unresolved where listed in §8. In particular, do not infer that `FlxSave` is confirmed for chart/editor saves or player results merely because it is used for volume.
 
 ---
 
 ## 6. Confirmed technical decisions — summary
 
-1. Start at `LoadingState` via `Main.hx`.
-2. No `Config.hx` dependency.
-3. `FlxSave` for persistent data, including volume.
+1. `Main.hx` is intended to start at `LoadingState`.
+2. No `Config.hx` dependency; the owner plans to delete it manually.
+3. Volume settings are intended to persist via `FlxSave`. This does not confirm `FlxSave` for chart/editor saves or player results.
 4. No audio-latency calibration.
-5. One chart per difficulty; per-song folder layout as described in §5.
-6. Variable lane count; per-lane designer-assigned key; simultaneous hits; `justPressed` only.
-7. Editor reachable from both Menu and Play; Setting is Play-only sub-state.
-8. Use `timing` in the rating table.
-9. Delete all `PlayState` objects on exit; note recycling.
+5. One chart per difficulty; per-song folder layout as described in §5.1. Exact chart schema and filenames remain unresolved.
+6. Variable lane count; per-lane designer-assigned key; simultaneous hits; a held key registers only its initial press (`justPressed`).
+7. Editor is reachable from both Menu and Play; Setting/Pause is a Play-only sub-state. The Pause trigger key remains unspecified.
+8. Use `timing` consistently in the rating table.
+9. Objects created for `PlayState` must be deleted/cleaned up when leaving it; note recycling is part of the design. Exact ownership and cleanup implementation remain open.
 
 ---
 
@@ -441,4 +450,5 @@ Each module is implemented only after its plan is approved. Build/runtime verifi
 ## 11. Change log
 
 - Initial version: merged the five design documents with the owner's confirmed decisions; unresolved items recorded without guessing.
-- Revised version: reorganized for direct implementation use while preserving the original confirmed rules, assumptions, discrepancies, and open questions. No unresolved design item is promoted to confirmed.
+- Revised version: reorganized for direct implementation use while preserving the recorded gameplay rules, assumptions, discrepancies, and open questions.
+- Current revision: clarified that architecture design is still in progress; separated the confirmed volume-persistence choice from unresolved chart/editor and result persistence; marked the initial `point`/`healPoint` values as provisional; and clarified that the implementation pipeline is proposed rather than approved. No unresolved design item is promoted to confirmed.
