@@ -1,8 +1,5 @@
-**SYSTEM INSTRUCTIONS:**
-1. Follow `CLAUDE.md` for behavioral rules.
-2. Use `PROJECT_SPEC.md` as the single source of truth for requirements.
-3. Use `ARCHITECTURE.md` for current design and `TASK_TRACKER.md` for progress.
-4. **CRITICAL:** You MUST NOT EDIT `.md` files. Only READ them. 
-5. After coding, generate a `HANDOFF PROMPT` (per `CLAUDE.md`).
-6. Do not invent Haxe/HaxeFlixel APIs or resolve spec conflicts silently.
-7. Do not compile/run the project. The owner handles local verification.
+**RULES:**
+1. Follow `CLAUDE.md` for coding and handoff rules.
+2. Read-only sources: `PROJECT_SPEC.md`, `ARCHITECTURE.md`, `TASK_TRACKER.md`.
+3. **DO NOT EDIT `.md` files.**
+4. You MUST end every task with a `HANDOFF PROMPT`.

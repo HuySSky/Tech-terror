@@ -1,39 +1,27 @@
 # ARCHITECTURE — Tech terror
 
-> **Status:** WIP. Owner/DeepSeek maintained. Claude is read-only.
+> **Status:** WIP. Read-only for Claude.
 
-## 1. App Structure & Constraints
-- **Framework:** HaxeFlixel. Entry: `Main.hx` → `LoadingState`.
-- **Dirs:** `source/`, `assets/{songs, images, music, sounds, data}/`.
-- **Constraint:** Delete `Config.hx`. No dependencies on it.
+## 1. Stack & Constraints
+- **Framework:** HaxeFlixel. Entry: `Main.hx` → `LoadingState`. Build: `lime test web`.
+- **Dirs:** `source/`, `assets/{songs,images,music,sounds,data}/`.
+- **Constraint:** Delete `Config.hx`. Leaving `PlayState` MUST delete all objects (prevent RAM leak).
 
 ## 2. States & Transitions
-- **Main:** `Loading`, `Menu`, `Play`, `Editor`, `Result`.
-- **Sub-state:** `Pause` (inside Play).
+- **Main:** `Loading`, `Menu`, `Play`, `Editor`, `Result`. **Sub-state:** `Pause` (in Play).
 - **Flow:**
   - `Loading` ↔ `Menu`
-  - `Menu` → `Play` / `Editor`
+  - `Menu` → `Play` (Enter) / `Editor` (7)
   - `Play` ↔ `Editor`
-  - `Play` → `Result` (passes `songResult`)
-  - `Play` → `Menu`
-  - `Result` → `Menu` (Enter/Space/Esc) | `Play` (R)
-- *Class ownership of transitions is TBD.*
+  - `Play` → `Result` / `Menu`
+  - `Result` → `Menu` (Enter/Space/Esc) / `Play` (R)
 
-## 3. Gameplay Flow
-1. Load assets (sprites, audio, data).
-2. Show UI (Health, Score).
-3. Start audio → 3s countdown → Gameplay.
-4. Loop: Input → Note check → `PlayerStats` update.
-- **Modules:** `Input`, `GameSystem`, `NoteSystem`, `PlayerStats`, `ResultSystem`. *(Class mapping TBD).*
-
-## 4. Object Model & Lifecycle
-- **Menu:** `songScrollLine` manages `songObject`s. Load: `songs.txt` → `_data.json` → `songObject`. Left/Right changes selection.
+## 3. Play Flow & Object Model
+- **Flow:** Load assets → UI → Audio (3s countdown) → Gameplay Loop.
+- **Menu:** `songScrollLine` manages `songObject`. Loads `songs.txt` → `_data.json`.
 - **Play:** 
-  - `Line` reads chart, creates `LineSprite`, owns 1 `NoteGenerator`.
-  - `NoteGenerator` reads `timeToHitList` → spawns `Note` 2s early using Line's sprite.
-- **Lifecycle:** Leaving `PlayState` **MUST** delete all created objects. Note recycling required.
+  - `Line` reads chart → creates `LineSprite` → owns 1 `NoteGenerator`.
+  - `NoteGenerator` reads `timeToHitList` → spawns `Note` 2s early via Line's sprite.
 
-## 5. Persistence
-- **Chart JSON:**
-  ```json
-  [{"line": 0, "timeToHitList": [1.0, 2.5]}, {"line": 1, "timeToHitList": [0.5]}]
+## 4. Persistence
+- **Chart JSON:** `[{"line": 0, "timeToHitList": [1.0, 2.5]}, {"line": 1, "timeToHitList": [0.5]}]`

@@ -1,20 +1,18 @@
 # CLAUDE.md — Tech terror
 
-## 1. Thinking & Coding Principles
-- **No guessing:** State assumptions. Ask if uncertainty affects design.
-- **No silent decisions:** Report conflicts or trade-offs; wait for owner's decision.
-- **Simplicity first:** Implement the minimum code to meet requirements. No speculative features, abstractions, or defensive coding for impossible scenarios.
-- **Surgical changes:** Change only what the task requires. Do not refactor adjacent code or remove dead code without approval.
+## 1. Coding Principles
+- **No Guessing:** Never invent Haxe/HaxeFlixel APIs. Verify against references; flag if missing.
+- **Simplicity:** Minimum code for requirements. No unrequested features or speculative abstractions.
+- **Surgical:** Change only what the task requires. Do not refactor adjacent code without approval.
+- **Context:** If docs/code conflict, report the exact discrepancy. Do not silently choose.
 
-## 2. Goal-Driven & Verification
-- Define success criteria before coding. Review diff after.
-- **Verification Limit:** Do not claim code compiles or runs. The owner runs `lime test web`. Do not install Haxe/HaxeFlixel. Verify API usage against references; flag if missing.
+## 2. Verification Limit
+- Do not claim code compiles or runs. Owner handles `lime test web`.
 
-## 3. Documentation & Handoff Protocol (STRICT)
-- **READ-ONLY:** DO NOT EDIT `.md` files (`PROJECT_SPEC.md`, `ARCHITECTURE.md`, `TASK_TRACKER.md`).
-- **HANDOFF PROMPT:** After every coding task, output a `HANDOFF PROMPT` for the owner to update docs. Format:
-  1. **Task Completed:** Milestone/Task ID.
-  2. **Files Modified:** List of created/changed source files.
-  3. **Implementation Summary:** Brief technical description.
-  4. **Unresolved Issues:** New blockers/U-IDs.
-  5. **Verification Required:** Exact local commands for owner.
+## 3. Handoff Prompt Format (STRICT)
+At the end of every coding response, you MUST output:
+1. **Task Completed:** Milestone/Task ID.
+2. **Files Modified:** List of created/changed source files.
+3. **Implementation Summary:** Brief technical description.
+4. **Unresolved Issues:** New blockers/U-IDs.
+5. **Verification Required:** Exact local commands (e.g., `lime test web`).
