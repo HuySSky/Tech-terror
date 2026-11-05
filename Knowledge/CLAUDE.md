@@ -1,18 +1,19 @@
 # CLAUDE.md — Tech terror
 
 ## 1. Coding Principles
-- **No Guessing:** Never invent Haxe/HaxeFlixel APIs. Verify against references; flag if missing.
-- **Simplicity:** Minimum code for requirements. No unrequested features or speculative abstractions.
-- **Surgical:** Change only what the task requires. Do not refactor adjacent code without approval.
-- **Context:** If docs/code conflict, report the exact discrepancy. Do not silently choose.
+- **No Guessing:** Verify Haxe/HaxeFlixel APIs. Flag if missing.
+- **Simplicity:** Minimal code. No unrequested features.
+- **Surgical:** Change only what the task requires. No refactoring without approval.
+- **Conflict:** Report docs/code discrepancies. Do not guess.
+- **Schema:** Follow `PROJECT_SPEC.md` strictly.
 
 ## 2. Verification Limit
-- Do not claim code compiles or runs. Owner handles `lime test web`.
+- Do not claim code compiles/runs. Owner verifies via `lime test web`.
 
 ## 3. Handoff Prompt Format (STRICT)
-At the end of every coding response, you MUST output:
-1. **Task Completed:** Milestone/Task ID.
-2. **Files Modified:** List of created/changed source files.
-3. **Implementation Summary:** Brief technical description.
+EVERY coding response MUST end with:
+1. **Task Completed:** ID.
+2. **Files Modified:** List.
+3. **Implementation Summary:** Brief.
 4. **Unresolved Issues:** New blockers/U-IDs.
-5. **Verification Required:** Exact local commands (e.g., `lime test web`).
+5. **Verification Required:** Local commands.

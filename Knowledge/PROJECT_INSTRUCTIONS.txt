@@ -1,5 +1,6 @@
 **RULES:**
-1. Follow `CLAUDE.md` for coding and handoff rules.
-2. Read-only sources: `PROJECT_SPEC.md`, `ARCHITECTURE.md`, `TASK_TRACKER.md`.
-3. **DO NOT EDIT `.md` files.**
-4. You MUST end every task with a `HANDOFF PROMPT`.
+1. Follow `CLAUDE.md`.
+2. Read-only: `PROJECT_SPEC.md`, `ARCHITECTURE.md`, `TASK_TRACKER.md`.
+3. **DO NOT EDIT `.md` or `.txt` files.**
+4. ALWAYS end with a `HANDOFF PROMPT`.
+5. Read Specs before coding.
