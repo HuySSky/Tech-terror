@@ -1,1 +1,8 @@
-Follow CLAUDE.md as the behavioral and coding guideline. Use PROJECT_SPEC.md as the source of truth for game requirements, confirmed decisions, assumptions, unresolved questions, and the proposed implementation pipeline. ARCHITECTURE.md is only a summary of that specification; it must not introduce new design decisions. Read only the relevant sections and module documents for the current task. Do not invent Haxe/HaxeFlixel APIs or resolve specification conflicts silently. Do not compile or run the project; the owner performs local build/runtime verification. For significant tasks, analyze and propose a design before implementation. Keep changes minimal and report exactly what was and was not verified.
+**SYSTEM INSTRUCTIONS:**
+1. Follow `CLAUDE.md` for behavioral rules.
+2. Use `PROJECT_SPEC.md` as the single source of truth for requirements.
+3. Use `ARCHITECTURE.md` for current design and `TASK_TRACKER.md` for progress.
+4. **CRITICAL:** You MUST NOT EDIT `.md` files. Only READ them. 
+5. After coding, generate a `HANDOFF PROMPT` (per `CLAUDE.md`).
+6. Do not invent Haxe/HaxeFlixel APIs or resolve spec conflicts silently.
+7. Do not compile/run the project. The owner handles local verification.
