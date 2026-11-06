@@ -8,7 +8,7 @@
 - **Out of scope:** Visual effects, audio calibration.
 
 ## 2. Gameplay & UI
-- **Duration (U-003):** Auto-read audio on Menu load. No `length` in JSON. `[Verify HaxeFlixel API]`.
+- **Duration:** Auto-read audio on Menu load. No `length` in JSON.
 - **Scale:** Max ~100 songs. No optimization needed.
 - **Flow:** Load -> UI -> Audio -> 3s countdown -> Gameplay. Notes spawn 2s pre-hit.
 - **Persistence:** `FlxSave` for Results/Config. JSON Import/Export for Editor. Web is test-only.
@@ -28,6 +28,7 @@
 - **Beat Mult (`heso`):** Strong (1.2), Medium (1.1), Weak (1.0). Apply to point/heal.
 - **Health:** `maxHealth = bpm`. Initial: `0.75 * maxHealth`. Cap: `[0, maxHealth]`. Lose at `curHealth <= 0`.
 - **Miss Penalty:** `healPoint = -0.75 * 10 * heso`.
+- **Empty Press:** 0 penalty, 0 score, does not break combo.
 - **Constants:** `basePoint = 100`, `baseHealPoint = 10`.
 
 **Result:**
@@ -38,22 +39,26 @@
 
 ## 4. Data Structure
 - **Paths:** `assets/songs/songs.txt`, `assets/songs/[name]/[name]_data.json`, `assets/songs/[name]/chart.json`.
-- **Chart Schema:** `[{"line": 0, "timeToHitList": [1.0, 2.5]}]`
-- **Objects:** `songData` (name, artist, bpm, previewStart, diff->scrollSpeed), `songObject` (data, result, cover, music), `songResult` (score, accuracy, rank, maxCombo, status), `Line` (sprite, key, generator), `NoteGenerator`, `Note` (sprite, timeToHit).
+- **TimeSignature:** `name` ("4/4"), `id`, `strongBeats` (Array<Int>), `mediumBeats` (Array<Int>). Only 4/4 is supported.
+- **Editor Grid Math:** `Columns = Beats / SubBeatDuration`. (e.g., 4/4, sub=0.5 -> 8 columns; sub=0.25 -> 16 columns).
+- **Chart Schema:** `[{"line": 0, "notes": [{"time": 1.0, "strength": 1.2}, {"time": 1.75, "strength": 1.0}]}]` *(Note: `time` handles swing offsets)*.
+- **Objects:** `songData` (name, artist, bpm, previewStart, diff->scrollSpeed), `songObject` (data, result, cover, music), `songResult` (score, accuracy, rank, maxCombo, status), `Line` (sprite, key, generator), `NoteGenerator`, `Note` (sprite, timeToHit, strength).
 
-## 5. State Transitions
-- **Loading ↔ Menu:** Enter/Space, Esc.
-- **Menu → Play/Editor:** Enter, `7`.
-- **Play → Result / Editor / Menu:** Level end/death, `7`, Esc.
-- **Pause:** Sub-state.
-- **Result → Menu / Play:** Enter/Space/Esc, `R`.
+## 5. State Transitions & Controls
+- **Loading ↔ Menu:** `Enter`/`Space` (to Menu), `Esc` (to Loading).
+- **Menu → Play/Editor:** `Enter` (Play), `7` (Editor), `Left/Right` (select song), `Tab` (switch difficulty).
+- **Play → Result / Editor / Menu:** Level end/death (Result), `7` (Editor), `Q`/`Backspace` (Quit to Menu).
+- **Pause System:** 
+  - In Play: `Esc` or `Enter` to Pause.
+  - In Pause: `Esc` to Resume (back to Play). `Enter` to select a menu option. `Q` or `Backspace` to Quit to Menu.
+- **Result → Menu / Play:** `Enter`/`Space`/`Esc` (Menu), `R` (Restart).
+- **Editor Controls:** 
+  - Change Bar (Measure): `Left/Right` keyboard arrows or UI buttons.
+  - Toggle Note: Mouse click.
+  - Exit to Menu: `Esc` (Triggers auto-save to `chart.json` before exiting).
 
-## 6. Unresolved (Do Not Guess)
-- **U-009:** Beat strength for 6/8, 5/4?
-- **U-010:** Penalty for empty press?
-- **U-011:** Editor 0.25 sub = 12 columns? (Math wrong?)
-- **U-012:** Editor bar/beat logic?
-- **U-014:** Pause key?
+## 6. Unresolved (DO NOT GUESS - Stop and Ask)
+- None at this time. (All U-issues resolved).
 
 ## 7. Assumptions
-- Notes scroll horizontally to vertical line. Tap only. Bar = measure, phách = beat.
+- Notes scroll horizontally to vertical line. Tap only. Bar = measure, beat = phách.
