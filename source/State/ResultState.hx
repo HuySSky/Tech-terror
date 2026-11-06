@@ -1,16 +1,16 @@
-package;
+package state;
 
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
 
 /** Placeholder. */
-class EditorState extends FlxState
+class ResultState extends FlxState
 {
 	override public function create():Void
 	{
 		super.create();
-		var t = new FlxText(0, 0, FlxG.width, "EDITOR (placeholder)\nEsc: Menu", 28);
+		var t = new FlxText(0, 0, FlxG.width, "RESULT (placeholder)\nEnter / Esc / Space: Menu", 28);
 		t.alignment = CENTER;
 		t.screenCenter(Y);
 		add(t);
@@ -19,6 +19,6 @@ class EditorState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		if (FlxG.keys.justPressed.ESCAPE) FlxG.switchState(MenuState.new);
+		if (FlxG.keys.anyJustPressed([ENTER, ESCAPE, SPACE])) FlxG.switchState(MenuState.new);
 	}
 }

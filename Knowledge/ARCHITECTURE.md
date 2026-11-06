@@ -12,7 +12,12 @@
 - **Play:** Load -> UI -> Audio (3s delay) -> Gameplay Loop. 
   - `Pause` is a sub-state. Triggered by `Esc`/`Enter`. 
   - Inside Pause: `Esc` resumes, `Q`/`Backspace` quits to Menu.
-- **Menu:** `songScrollLine` reads `songs.txt` -> loads `_data.json` -> spawns `songObject`.
+- **Menu:** 
+  - `MenuState` initializes `songScrollLine`.
+  - `songScrollLine` reads `songs.txt` -> loads `_data.json` -> creates `songSprite` objects via `new(songData)`.
+  - `songScrollLine.add(songSprite)`: Adds to the horizontal line.
+  - **Visuals:** Selected song scales to 1.2x. Left/Right input updates selection index.
+  - **Info Panel:** Updates automatically based on the selected `songSprite`.
 - **Play Objects:** `Line` -> `LineSprite` + `NoteGenerator` -> spawns `Note` (2s early, recycles).
 - **Editor:** 
   - **UI:** DAW-style grid (like FL Studio Channel Rack). Rows = Instruments (`Line`), Columns = Beats/Sub-beats.

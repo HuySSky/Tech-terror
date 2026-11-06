@@ -39,10 +39,33 @@
 
 ## 4. Data Structure
 - **Paths:** `assets/songs/songs.txt`, `assets/songs/[name]/[name]_data.json`, `assets/songs/[name]/chart.json`.
-- **TimeSignature:** `name` ("4/4"), `id`, `strongBeats` (Array<Int>), `mediumBeats` (Array<Int>). Only 4/4 is supported.
+- **TimeSignature:** `name` ("4/4"), `id`, `strongBeats` (Array<Int>), `mediumBeats` (Array<Int>).
 - **Editor Grid Math:** `Columns = Beats / SubBeatDuration`. (e.g., 4/4, sub=0.5 -> 8 columns; sub=0.25 -> 16 columns).
 - **Chart Schema:** `[{"line": 0, "notes": [{"time": 1.0, "strength": 1.2}, {"time": 1.75, "strength": 1.0}]}]` *(Note: `time` handles swing offsets)*.
-- **Objects:** `songData` (name, artist, bpm, previewStart, diff->scrollSpeed), `songObject` (data, result, cover, music), `songResult` (score, accuracy, rank, maxCombo, status), `Line` (sprite, key, generator), `NoteGenerator`, `Note` (sprite, timeToHit, strength).
+- **Objects:** 
+  - `songData`: (name, artist, bpm, previewStart, diff->scrollSpeed).
+  - `songSprite`: Visual object for Menu. Equivalent to `songObject`. Initialized via `new(data: SongData)`. Contains data, result, cover, music.
+  - `songScrollLine`: Container for `songSprite`. Layouts them horizontally.
+  - `songResult`: (score, accuracy, rank, maxCombo, status).
+  - `Line`, `NoteGenerator`, `Note` (sprite, timeToHit, strength).
+
+## 4.1 Menu UI Layout
+- **Top Half (Carousel):** `songScrollLine` holds `songSprite` objects arranged horizontally with a fixed gap. 
+  - **Selection:** The currently selected song is scaled up (`x1.2`) and centered.
+  - **Navigation:** Press Left/Right arrows to change selection. Unselected songs scale down to `x1.0`.
+- **Bottom Half (Info Panel):** A dark rectangle UI overlay. Shows: Song Name, Artist, BPM, and Current Difficulty (Easy/Medium/Hard). Also shows High Score & Rank of the current difficulty (read from `FlxSave`).
+- **`songSprite` Specs:**
+  - Base size: 175x325 pixels (placeholder solid color if no cover exists).
+  - Displays the cover image (150x150). Does NOT contain text.
+- **`songScrollLine` Positioning (Instructions):**
+  - Arrange the `songSprite` objects horizontally with a fixed 50px gap.
+  - The selected sprite scales to `x1.2`. Unselected sprites scale to `x1.0`.
+  - Implement logic to shift the entire `songScrollLine` (X-axis) so that the *selected sprite* is perfectly centered on the screen.
+- **Controls & Logic:**
+  - `Left`/`Right` arrows: Update `selectedIndex`, reposition `songScrollLine`, update Info Panel.
+  - `Tab`: Cycles Difficulty (Easy -> Medium -> Hard). Updates the Info Panel's High Score to match the new difficulty.
+  - `Enter`: Start Playstate with current `songData` and `difficulty`.
+  - `7`: Start Editor with current `songData`.
 
 ## 5. State Transitions & Controls
 - **Loading ↔ Menu:** `Enter`/`Space` (to Menu), `Esc` (to Loading).

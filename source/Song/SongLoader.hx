@@ -1,4 +1,4 @@
-package;
+package song;
 
 import haxe.Json;
 import openfl.Assets;
