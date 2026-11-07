@@ -33,9 +33,8 @@ E.g.: `FlxG.switchState(new PlayState(songData, difficulty))`
 
 **Menu Flow** — see `PROJECT_SPEC.md §4.1`:
 - `songScrollLine` reads `songs.txt`.
-- For each name: `SongData.load(name)` (parses `_data.json`).
-- Creates `new SongSprite(songData)`, adds to line.
-- `SongSprite` loads own cover + audio. Duration → Info Panel.
+- For each name: `new Song(name)` (Song creates `new SongData(name)` internally).
+- Adds to horizontal line. `Song` loads own cover + audio. Duration → Info Panel.
 
 **Play Objects:** `Line` → `LineSprite` + `NoteGenerator` → spawns `Note` (2s early, recycled).
 
@@ -56,6 +55,6 @@ E.g.: `FlxG.switchState(new PlayState(songData, difficulty))`
 **JSON Files:** Editor chart I/O (Windows only). Files: `chart_[difficulty].json`.
 
 **Self-Instantiation:**
-- `SongData.load(name)` parses own `_data.json`.
-- `SongSprite` gets `SongData`, loads own cover/audio.
+- `new SongData(name)` parses own `_data.json` in constructor.
+- `new Song(name)` creates own `SongData` and loads own cover/audio.
 - No external Loader class.

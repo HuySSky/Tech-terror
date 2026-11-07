@@ -6,11 +6,11 @@
 - [x] **M0 — State skeleton:** App flow.
 - [x] **M1 — Song loading:** `songs.txt` + `_data.json` metadata.
 - [x] **M2.1 — Menu UI: Carousel & Layout:** `SongScrollLine`, `SongSprite`, L/R nav, Tab diff switch, scaling/centering.
+- [x] **M2.1b — Fix Data Arch:** `SongData` parse (`timeSignature`→`TimeSignature`, `difficulty`→`scrollSpeed` map). `TimeSignature` class created. `SongLoader.hx` removed. `SongScrollLine` reads `songs.txt` + creates `new Song(name)`.
 
 ## Next (Unblocked - Exact Order)
-- [ ] **M2.1b — Fix Data Arch (U-020, U-021):** `SongData` parse (`timeSignature`=String, `difficulty`→`scrollSpeed`). Create `TimeSignature` class. Remove `SongLoader.hx`; `SongScrollLine` reads `songs.txt` + calls `SongData.load(name)`.
-- [ ] **M2.2 — Fix Menu Visuals (U-022, U-023):** `SongSprite` load 150x150 cover (top), render name+artist (bottom). `MenuState` pass data via constructor (no static), show Audio Duration.
-- [ ] **M3.1 — Fix State Constructors & Keys (U-024, U-025):** Add constructors to `PlayState`/`EditorState` (`songData`, `difficulty`). Fix `PlayState` keys (Quit `Q`/`Backspace`, Pause `Esc`/`Enter`). Fix `EditorState` exit `Esc`.
+- [ ] **M2.2 — Fix Menu Visuals:** `Song` load 150x150 cover (top), render name+artist (bottom). `MenuState` pass `songData`+`difficulty` via constructor (no static vars). Info Panel: show Audio Duration.
+- [ ] **M3.1 — Fix State Constructors & Keys:** Add constructors to `PlayState`/`EditorState` (`songData`, `difficulty`). Fix `PlayState` keys (Quit `Q`/`Backspace`, Pause `Esc`/`Enter`). Fix `EditorState` exit `Esc`.
 - [ ] **M3.2 — FlxSave:** Basic `FlxSave` for results. High Score & Rank in Menu Info Panel.
 - [ ] **M4.1 — Editor UI: Grid:** DAW grid, rows=lines, cols=beats/sub-beats. L/R bar nav.
 - [ ] **M4.2 — Editor Interaction:** Mouse click toggle notes.

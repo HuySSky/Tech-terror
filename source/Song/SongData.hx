@@ -8,24 +8,27 @@ class SongData
 	public var name:String;
 	public var artist:String;
 	public var bpm:Float;
-	public var timeSignature:String;
+	public var timeSignature:TimeSignature;
 	public var previewStart:Float;
 	public var scrollSpeed:Map<String, Float>;
 
-	public function new(name:String)
+	public function new(songName:String)
 	{
-		var rawJson = Assets.getText("assets/songs/" + name + "_data.json");
-		var json = Json.parse(rawJson);
+		load(songName);
+	}
+
+	function load(songName:String)
+	{
+		var json = Json.parse(Assets.getText('assets/songs/$songName/${songName}_data.json'));
 
 		this.name = json.name;
 		this.artist = json.artist;
 		this.bpm = json.bpm;
-		this.timeSignature = json.timeSignature;
+		this.timeSignature = new TimeSignature(json.timeSignature);
 		this.previewStart = json.previewStart;
 
 		this.scrollSpeed = new Map<String, Float>();
-		for (key in Reflect.fields(json.scrollSpeed))
-			this.scrollSpeed.set(key, Reflect.field(json.scrollSpeed, key));
+		for (diff in Reflect.fields(json.difficulty))
+			this.scrollSpeed.set(diff, Reflect.field(Reflect.field(json.difficulty, diff), "scrollSpeed"));
 	}
-
 }

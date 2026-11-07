@@ -60,5 +60,6 @@ var song = new SongData(jsonData);
 
 ✅ Object self-loads:
 ```haxe
-var song = new SongData("songName"); // or SongData.load("songName")
+var song = new SongData("songName"); // constructor self-loads
+var songSprite = new Song("songName"); // Song creates own SongData
 ```

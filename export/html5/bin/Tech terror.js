@@ -940,7 +940,7 @@ ApplicationMain.main = function() {
 ApplicationMain.create = function(config) {
 	var app = new openfl_display_Application();
 	ManifestResources.init(config);
-	app.meta.h["build"] = "9";
+	app.meta.h["build"] = "12";
 	app.meta.h["company"] = "HaxeFlixel";
 	app.meta.h["file"] = "Tech terror";
 	app.meta.h["name"] = "Tech terror";
@@ -3919,7 +3919,7 @@ openfl_display_Sprite.prototype = $extend(openfl_display_DisplayObjectContainer.
 });
 var Main = function() {
 	openfl_display_Sprite.call(this);
-	this.addChild(new flixel_FlxGame(1024,768,flixel_util_typeLimit_InitialState.fromType(state_LoadingState)));
+	this.addChild(new flixel_FlxGame(1280,768,flixel_util_typeLimit_InitialState.fromType(state_LoadingState)));
 };
 $hxClasses["Main"] = Main;
 Main.__name__ = "Main";
@@ -4153,7 +4153,7 @@ ManifestResources.init = function(config) {
 	openfl_text_Font.registerFont(_$_$ASSET_$_$OPENFL_$_$flixel_$fonts_$nokiafc22_$ttf);
 	openfl_text_Font.registerFont(_$_$ASSET_$_$OPENFL_$_$flixel_$fonts_$monsterrat_$ttf);
 	var bundle;
-	var data = "{\"name\":null,\"assets\":\"aoy4:pathy34:assets%2Fdata%2Fdata-goes-here.txty4:sizezy4:typey4:TEXTy2:idR1y7:preloadtgoR0y36:assets%2Fimages%2Fimages-go-here.txtR2zR3R4R5R7R6tgoR0y36:assets%2Fmusic%2Fmusic-goes-here.txtR2zR3R4R5R8R6tgoR2i4735418R3y5:MUSICR5y50:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean.mp3y9:pathGroupaR10hR6tgoR0y56:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean_data.jsonR2i199R3R4R5R12R6tgoR0y48:assets%2Fsongs%2FBillie%20Jean%2FBillie_Jean.jpgR2i115762R3y5:IMAGER5R13R6tgoR0y99:assets%2Fsongs%2FBillie%20Jean%2FMichael%20Jackson%20-%20Billie%20Jean%20%28Official%20Video%29.mp4R2i17502597R3y6:BINARYR5R15R6tgoR0y26:assets%2Fsongs%2Fsongs.txtR2i12R3R4R5R17R6tgoR0y36:assets%2Fsounds%2Fsounds-go-here.txtR2zR3R4R5R18R6tgoR2i8220R3R9R5y26:flixel%2Fsounds%2Fbeep.mp3R11aR19y26:flixel%2Fsounds%2Fbeep.ogghR6tgoR2i39706R3R9R5y28:flixel%2Fsounds%2Fflixel.mp3R11aR21y28:flixel%2Fsounds%2Fflixel.ogghR6tgoR2i6840R3y5:SOUNDR5R20R11aR19R20hgoR2i33629R3R23R5R22R11aR21R22hgoR2i15744R3y4:FONTy9:classNamey35:__ASSET__flixel_fonts_nokiafc22_ttfR5y30:flixel%2Ffonts%2Fnokiafc22.ttfR6tgoR2i29724R3R24R25y36:__ASSET__flixel_fonts_monsterrat_ttfR5y31:flixel%2Ffonts%2Fmonsterrat.ttfR6tgoR0y33:flixel%2Fimages%2Fui%2Fbutton.pngR2i222R3R14R5R30R6tgoR0y36:flixel%2Fimages%2Flogo%2Fdefault.pngR2i484R3R14R5R31R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	var data = "{\"name\":null,\"assets\":\"aoy4:pathy34:assets%2Fdata%2Fdata-goes-here.txty4:sizezy4:typey4:TEXTy2:idR1y7:preloadtgoR0y36:assets%2Fimages%2Fimages-go-here.txtR2zR3R4R5R7R6tgoR0y36:assets%2Fmusic%2Fmusic-goes-here.txtR2zR3R4R5R8R6tgoR2i4735418R3y5:MUSICR5y50:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean.mp3y9:pathGroupaR10hR6tgoR0y56:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean_data.jsonR2i257R3R4R5R12R6tgoR0y48:assets%2Fsongs%2FBillie%20Jean%2FBillie_Jean.jpgR2i115762R3y5:IMAGER5R13R6tgoR0y99:assets%2Fsongs%2FBillie%20Jean%2FMichael%20Jackson%20-%20Billie%20Jean%20%28Official%20Video%29.mp4R2i17502597R3y6:BINARYR5R15R6tgoR0y26:assets%2Fsongs%2Fsongs.txtR2i12R3R4R5R17R6tgoR0y36:assets%2Fsounds%2Fsounds-go-here.txtR2zR3R4R5R18R6tgoR2i8220R3R9R5y26:flixel%2Fsounds%2Fbeep.mp3R11aR19y26:flixel%2Fsounds%2Fbeep.ogghR6tgoR2i39706R3R9R5y28:flixel%2Fsounds%2Fflixel.mp3R11aR21y28:flixel%2Fsounds%2Fflixel.ogghR6tgoR2i6840R3y5:SOUNDR5R20R11aR19R20hgoR2i33629R3R23R5R22R11aR21R22hgoR2i15744R3y4:FONTy9:classNamey35:__ASSET__flixel_fonts_nokiafc22_ttfR5y30:flixel%2Ffonts%2Fnokiafc22.ttfR6tgoR2i29724R3R24R25y36:__ASSET__flixel_fonts_monsterrat_ttfR5y31:flixel%2Ffonts%2Fmonsterrat.ttfR6tgoR0y33:flixel%2Fimages%2Fui%2Fbutton.pngR2i222R3R14R5R30R6tgoR0y36:flixel%2Fimages%2Flogo%2Fdefault.pngR2i484R3R14R5R31R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	var manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	var library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -87672,7 +87672,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 906478;
+	this.version = 56908;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = "lime.utils.AssetCache";
@@ -138879,27 +138879,27 @@ openfl_utils__$internal_format_amf3_AMF3Writer.prototype = {
 	}
 	,__class__: openfl_utils__$internal_format_amf3_AMF3Writer
 };
-var song_SongData = function() {
+var song_Song = function(name) {
+	flixel_FlxSprite.call(this);
+	this.data = new song_SongData(name);
+	this.makeGraphic(175,325,-8355712);
+};
+$hxClasses["song.Song"] = song_Song;
+song_Song.__name__ = "song.Song";
+song_Song.__super__ = flixel_FlxSprite;
+song_Song.prototype = $extend(flixel_FlxSprite.prototype,{
+	data: null
+	,get_data: function() {
+		return this.data;
+	}
+	,__class__: song_Song
+	,__properties__: $extend(flixel_FlxSprite.prototype.__properties__,{get_data:"get_data"})
+});
+var song_SongData = function(songName) {
+	this.load(songName);
 };
 $hxClasses["song.SongData"] = song_SongData;
 song_SongData.__name__ = "song.SongData";
-song_SongData.fromJson = function(json) {
-	var d = new song_SongData();
-	d.name = json.name;
-	d.artist = json.artist;
-	d.bpm = json.bpm;
-	d.timeSignature = [json.timeSignature[0] | 0,json.timeSignature[1] | 0];
-	d.previewStart = json.previewStart;
-	d.scrollSpeed = new haxe_ds_StringMap();
-	var _g = 0;
-	var _g1 = Reflect.fields(json.scrollSpeed);
-	while(_g < _g1.length) {
-		var key = _g1[_g];
-		++_g;
-		d.scrollSpeed.h[key] = Reflect.field(json.scrollSpeed,key);
-	}
-	return d;
-};
 song_SongData.prototype = {
 	name: null
 	,artist: null
@@ -138907,52 +138907,37 @@ song_SongData.prototype = {
 	,timeSignature: null
 	,previewStart: null
 	,scrollSpeed: null
+	,load: function(songName) {
+		var json = JSON.parse(openfl_utils_Assets.getText("assets/songs/" + songName + "/" + songName + "_data.json"));
+		this.name = json.name;
+		this.artist = json.artist;
+		this.bpm = json.bpm;
+		this.timeSignature = new song_TimeSignature(json.timeSignature);
+		this.previewStart = json.previewStart;
+		this.scrollSpeed = new haxe_ds_StringMap();
+		var _g = 0;
+		var _g1 = Reflect.fields(json.difficulty);
+		while(_g < _g1.length) {
+			var diff = _g1[_g];
+			++_g;
+			this.scrollSpeed.h[diff] = Reflect.field(Reflect.field(json.difficulty,diff),"scrollSpeed");
+		}
+	}
 	,__class__: song_SongData
 };
-var song_SongLoader = function() { };
-$hxClasses["song.SongLoader"] = song_SongLoader;
-song_SongLoader.__name__ = "song.SongLoader";
-song_SongLoader.loadAll = function() {
-	var result = [];
-	var listText = openfl_utils_Assets.getText("assets/songs/songs.txt");
-	if(listText == null) {
-		haxe_Log.trace("[SongLoader] WARN: missing songs.txt",{ fileName : "source/song/SongLoader.hx", lineNumber : 15, className : "song.SongLoader", methodName : "loadAll"});
-		return result;
-	}
-	var _g = 0;
-	var _g1 = listText.split("\n");
-	while(_g < _g1.length) {
-		var line = _g1[_g];
-		++_g;
-		var songName = StringTools.trim(line);
-		if(songName == "") {
-			continue;
-		}
-		var path = "assets/songs/" + songName + "/" + songName + "_data.json";
-		try {
-			var data = song_SongData.fromJson(JSON.parse(openfl_utils_Assets.getText(path)));
-			result.push(data);
-			haxe_Log.trace("[SongLoader] OK: " + data.name + " | bpm=" + data.bpm,{ fileName : "source/song/SongLoader.hx", lineNumber : 30, className : "song.SongLoader", methodName : "loadAll"});
-		} catch( _g2 ) {
-			haxe_NativeStackTrace.lastError = _g2;
-			var e = haxe_Exception.caught(_g2).unwrap();
-			haxe_Log.trace("[SongLoader] WARN: failed to load " + path + ": " + Std.string(e),{ fileName : "source/song/SongLoader.hx", lineNumber : 34, className : "song.SongLoader", methodName : "loadAll"});
-		}
-	}
-	return result;
-};
-var song_SongScrollLine = function(songs) {
+var song_SongScrollLine = function() {
 	flixel_group_FlxTypedSpriteGroup.call(this);
+	var songs = this.loadAll();
 	var _g_current = 0;
 	var _g_array = songs;
 	while(_g_current < _g_array.length) {
 		var _g_value = _g_array[_g_current];
 		var _g_key = _g_current++;
 		var i = _g_key;
-		var d = _g_value;
-		var s = new song_SongSprite(d);
-		s.setPosition(i * 225,flixel_FlxG.height / 4 - 162.5);
-		this.add(s);
+		var name = _g_value;
+		var song = new song_Song(name);
+		song.setPosition(i * 225,flixel_FlxG.height / 4 - 162.5);
+		this.add(song);
 	}
 };
 $hxClasses["song.SongScrollLine"] = song_SongScrollLine;
@@ -138971,20 +138956,51 @@ song_SongScrollLine.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototy
 		}
 		this.set_x(flixel_FlxG.width / 2 - (index * 225 + 87.5));
 	}
+	,get: function(index) {
+		return this.group.members[index];
+	}
+	,loadAll: function() {
+		var result = [];
+		var listText = openfl_utils_Assets.getText("assets/songs/songs.txt");
+		if(listText == null) {
+			haxe_Log.trace("[SongLoader] WARN: missing songs.txt",{ fileName : "source/song/SongScrollLine.hx", lineNumber : 43, className : "song.SongScrollLine", methodName : "loadAll"});
+			return result;
+		}
+		var _g = 0;
+		var _g1 = listText.split("\n");
+		while(_g < _g1.length) {
+			var line = _g1[_g];
+			++_g;
+			var songName = StringTools.trim(line);
+			if(songName == "") {
+				continue;
+			}
+			result.push(songName);
+		}
+		return result;
+	}
 	,__class__: song_SongScrollLine
 });
-var song_SongSprite = function(data) {
-	flixel_FlxSprite.call(this);
-	this.data = data;
-	this.makeGraphic(175,325,-8355712);
+var song_TimeSignature = function(signature) {
+	var parts = signature.split("/");
+	var numerator = Std.parseInt(parts[0]);
+	var denominator = Std.parseInt(parts[1]);
+	this.name = signature;
+	this.id = numerator * 100 + denominator;
+	this.beatsPerMeasure = numerator;
+	this.strongBeats = [0];
+	this.mediumBeats = numerator % 2 == 0 ? [numerator / 2 | 0] : [];
 };
-$hxClasses["song.SongSprite"] = song_SongSprite;
-song_SongSprite.__name__ = "song.SongSprite";
-song_SongSprite.__super__ = flixel_FlxSprite;
-song_SongSprite.prototype = $extend(flixel_FlxSprite.prototype,{
-	data: null
-	,__class__: song_SongSprite
-});
+$hxClasses["song.TimeSignature"] = song_TimeSignature;
+song_TimeSignature.__name__ = "song.TimeSignature";
+song_TimeSignature.prototype = {
+	name: null
+	,id: null
+	,beatsPerMeasure: null
+	,strongBeats: null
+	,mediumBeats: null
+	,__class__: song_TimeSignature
+};
 var state_EditorState = function() {
 	flixel_FlxState.call(this);
 };
@@ -139077,20 +139093,17 @@ var state_MenuState = function() {
 };
 $hxClasses["state.MenuState"] = state_MenuState;
 state_MenuState.__name__ = "state.MenuState";
-state_MenuState.selectedSong = null;
-state_MenuState.selectedDifficulty = null;
 state_MenuState.__super__ = flixel_FlxState;
 state_MenuState.prototype = $extend(flixel_FlxState.prototype,{
-	songs: null
-	,scrollLine: null
+	scrollLine: null
 	,infoText: null
 	,selected: null
 	,diff: null
 	,create: function() {
 		flixel_FlxState.prototype.create.call(this);
-		this.songs = song_SongLoader.loadAll();
-		this.scrollLine = new song_SongScrollLine(this.songs);
+		this.scrollLine = new song_SongScrollLine();
 		this.add(this.scrollLine);
+		state_MenuState.numberOfSong = this.scrollLine.group.members.length;
 		this.add(new flixel_FlxSprite(0,flixel_FlxG.height / 2).makeGraphic(flixel_FlxG.width,flixel_FlxG.height / 2 | 0,-14671840));
 		this.infoText = new flixel_text_FlxText(20,flixel_FlxG.height / 2 + 20,flixel_FlxG.width - 40,"",24);
 		this.add(this.infoText);
@@ -139109,7 +139122,7 @@ state_MenuState.prototype = $extend(flixel_FlxState.prototype,{
 		if(tmp) {
 			var _this = flixel_FlxG.keys.justPressed;
 			var Value = this.selected + (_this.keyManager.checkStatusUnsafe(39,_this.status) ? 1 : -1);
-			var Max = this.songs.length - 1;
+			var Max = state_MenuState.numberOfSong - 1;
 			var lowerBound = Value < 0 ? 0 : Value;
 			this.selected = (Max != null && lowerBound > Max ? Max : lowerBound) | 0;
 			this.refresh();
@@ -139170,10 +139183,10 @@ state_MenuState.prototype = $extend(flixel_FlxState.prototype,{
 		}
 	}
 	,refresh: function() {
-		state_MenuState.selectedSong = this.songs[this.selected];
-		state_MenuState.selectedDifficulty = state_MenuState.difficulties[this.diff];
+		var selectedDifficulty = state_MenuState.difficulties[this.diff];
+		var selectedSongData = this.scrollLine.get(this.selected).get_data();
 		this.scrollLine.select(this.selected);
-		this.infoText.set_text("" + state_MenuState.selectedSong.name + "\n" + state_MenuState.selectedSong.artist + "\nBPM: " + state_MenuState.selectedSong.bpm + "\nDifficulty: " + state_MenuState.selectedDifficulty.toUpperCase());
+		this.infoText.set_text("" + selectedSongData.name + "\n" + selectedSongData.artist + "\nBPM: " + selectedSongData.bpm + "\nDifficulty: " + selectedDifficulty.toUpperCase());
 	}
 	,__class__: state_MenuState
 });
@@ -143112,9 +143125,10 @@ openfl_utils__$internal_TouchData.__pool = new lime_utils_ObjectPool(function() 
 	data.reset();
 });
 openfl_utils__$internal_format_amf3_AMF3Array.__meta__ = { fields : { extra : { optional : null}}};
+song_Song.W = 175;
+song_Song.H = 325;
 song_SongScrollLine.GAP = 50;
-song_SongSprite.W = 175;
-song_SongSprite.H = 325;
+state_MenuState.numberOfSong = 0;
 state_MenuState.difficulties = ["easy","medium","hard"];
 ApplicationMain.main();
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);

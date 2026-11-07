@@ -74,9 +74,9 @@
 - **`timeSignature`:** string (e.g., `"4/4"`). Parsed by `TimeSignature`.
 - **`difficulty`:** map may omit diffs.
 
-**`TimeSignature` (class):** parses string `"4/4"` → `name`(String), `id`(Int), `strongBeats:Array<Int>`, `mediumBeats:Array<Int>`, `beatsPerMeasure`(Int, numerator). Beat indices 0-based within measure.
+**`TimeSignature` (class):** parses string `"4/4"` → fields `name`(String), `id`(Int, `num*100+den`), `strongBeats:Array<Int>`, `mediumBeats:Array<Int>`, `beatsPerMeasure`(Int, numerator). Beat indices 0-based within measure.
 
-**`SongData` (class):** fields `name`, `artist`, `bpm`, `previewStart`, `timeSignature`, `difficulty→scrollSpeed`. Loaded via `SongData.load(name)` (parses own `_data.json`). NOT contains `subBeat` (Editor-only).
+**`SongData` (class):** fields `name:String`, `artist:String`, `bpm:Float`, `previewStart:Float`, `timeSignature:TimeSignature` (parsed from JSON string), `scrollSpeed:Map<String, Float>` (keyed by difficulty). Instantiated via `new SongData(songName)` — constructor parses `_data.json` internally. NOT contains `subBeat` (Editor-only).
 
 **Chart scope:** one `chart_[difficulty].json` per diff. Diff affects `scrollSpeed`, high score, file loaded.
 
@@ -105,10 +105,10 @@
 **Editor BeatStrength assignment:** for note at time `t`: `b = floor(t mod beatsPerMeasure)`. `b ∈ strongBeats`→1.2; `b ∈ mediumBeats`→1.1; else 1.0.
 
 **Core Objects:**
-- `SongData`: see above.
-- `TimeSignature`: see above.
-- `SongSprite`: Menu visual. `new(songData:SongData)`. Loads own cover (150x150 placeholder) + audio. No text.
-- `SongScrollLine`: Container. Reads `songs.txt`, calls `SongData.load(name)`. H-layout, 50px gap.
+- `SongData`: see above. `new SongData(name)` reads/parses own `_data.json`.
+- `TimeSignature`: see above. `new TimeSignature(str)` parses string.
+- `Song`: Menu visual. `new(name:String)` — creates `new SongData(name)` internally, loads own cover (150x150 placeholder) + audio. Exposes `data:SongData` (getter). No text. Base 175x325.
+- `SongScrollLine`: extends `FlxTypedSpriteGroup<Song>`. Reads `songs.txt`, creates `new Song(name)`. H-layout, 50px gap. `select(index)` scales/repositions. `get(index):Song`.
 - `SongResult`: `(score:Int, accuracy:Float, rank:String, maxCombo:Int, status:String)`.
 - `Line`, `LineSprite`, `NoteGenerator`, `Note`: `(sprite, hitTime, strength)`.
 
@@ -159,4 +159,4 @@
 ## 7. Assumptions
 - Notes scroll horizontally toward vertical hit line. Tap only. Bar=measure, beat=phách.
 - **Lane keys:** fixed per `lines` index in `chart_[difficulty].json`. Default 4 lanes `D`,`F`,`J`,`K`. More lanes → extend (`D`,`F`,`J`,`K`,`L`,`S`,...).
-- **Persistence:** "JSON" in PDF = `FlxSave` in code. `FlxSave` serializes to JSON.
+- **Persistence:** "JSON" in PDF = `FlxSave` in code. `FlxSave` serializes to JSON. Self-instantiation: `new SongData(name)` and `new Song(name)` — no external Loader.

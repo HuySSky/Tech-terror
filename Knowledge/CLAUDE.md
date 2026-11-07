@@ -5,7 +5,6 @@ Behavioral guidelines for a HaxeFlixel rhythm game. Bias toward caution over spe
 ## 1. Role & Core Principles
 
 - **Zero-Fluff Output:** No explanations, no prose, no run instructions. Output ONLY complete file contents inside markdown blocks, each prefixed with a `### [path]` header (e.g., `### source/song/SongData.hx`). Do NOT write or edit any file in `source/` or elsewhere — the Owner pastes your code and runs tests. A one-line summary in the Handoff is the maximum allowed text.
-- **Zero-Fluff Output:** No explanations, no run instructions. Output only raw code inside markdown blocks. Reasoning and uncertainties go into the Handoff Prompt (§7) or are raised via Stop & Ask (§6).
 - **No Guessing:** Verify Haxe/HaxeFlixel APIs before use. Missing API or missing logic → report as `U-xxx` (see `PROJECT_SPEC.md §6`).
 - **Conflict Resolution:** Report exact discrepancies between `PROJECT_SPEC.md` and code. Do not silently pick one side.
 - **Self-Instantiation:** Objects encapsulate their own creation/loading (`SongData.load(name)`, `new SongSprite(songData)`). No external Loader classes.
