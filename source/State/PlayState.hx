@@ -32,8 +32,8 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		if (FlxG.keys.justPressed.ENTER) FlxG.switchState(ResultState.new);
 		else if (FlxG.keys.justPressed.SEVEN) FlxG.switchState(() -> new EditorState(songData, difficulty));
-		else if (FlxG.keys.justPressed.P)
+		else if (FlxG.keys.anyJustPressed([P, ESCAPE, ENTER, SPACE]))
 			openSubState(new PauseSubState());
-		else if (FlxG.keys.justPressed.ESCAPE) FlxG.switchState(MenuState.new);
+		else if (FlxG.keys.anyJustPressed([Q, BACKSPACE])) FlxG.switchState(MenuState.new);
 	}
 }

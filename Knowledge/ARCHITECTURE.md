@@ -4,57 +4,55 @@
 ## 1. Stack & Constraints
 - **Framework:** HaxeFlixel.
 - **Entry:** `Main.hx` → `LoadingState`.
-- **Dirs:** `source/`, `assets/`.
 - **Target:** Windows.
 - **Web:** testing only.
 - **Editor I/O:** `chart_[difficulty].json` save/load Windows-only. No-op/trace on web.
+- **RAM:** PlayState must clean up all objects on exit (`destroy()`).
 
-## 2. Core Flows
+## 2. State Flows & Data Passing
 
-**App:** `Loading` ↔ `Menu` → `Play`/`Editor` → `Result` → `Menu`.
+**App Flow:** `Loading` ↔ `Menu` → `Play`/`Editor` → `Result` → `Menu`.
 
-**State Data Passing** — via constructor params, NOT static vars:
+**Data Passing (via Constructors, NO static vars):**
 - `Menu → Play`: `songData:SongData`, `difficulty:String`
 - `Menu → Editor`: `songData:SongData`, `difficulty:String`
 - `Play → Result`: `songResult:SongResult`
 - `Play → Editor`: `songData:SongData`, `difficulty:String`
 
-E.g.: `FlxG.switchState(new PlayState(songData, difficulty))`
+*E.g.:* `FlxG.switchState(PlayState(songData, difficulty).new)`
 
 **Play Flow:**
-1. Load `chart_[difficulty].json`.
-2. Init UI.
-3. Start audio.
-4. 3s countdown.
-5. Gameplay loop (input active).
+1. **Intro:** Load chart, init UI, 3s audio countdown.
+2. **Gameplay:** Input active, `PlayerStats` updates.
+3. **Outro** (end of song/death):
+   - Create `SongResult`, call `fromPlayerStats()`.
+   - Call `saveData(flxSave)` (checks if new high score).
+   - Switch to `ResultState(songResult)`.
 
-- Notes spawn when `hitTime - currentTime <= 2.0`; recycle after hit/miss.
-- `Pause` = in-`PlayState` overlay, not separate FlxState. See `PROJECT_SPEC.md §5`.
+**Menu Flow:**
+1. `songScrollLine` reads `songs.txt`.
+2. For each: `new Song(name)`.
+3. Adds to horizontal line. Selected scales ×1.2, centered.
+4. Info Panel reads `SongResult.loadData()` for High Score display.
 
-**Menu Flow** — see `PROJECT_SPEC.md §4.1`:
-- `songScrollLine` reads `songs.txt`.
-- For each name: `new Song(name)` (Song creates `new SongData(name)` internally).
-- Adds to horizontal line. `Song` loads own cover + audio. Duration → Info Panel.
-
-**Play Objects:** `Line` → `LineSprite` + `NoteGenerator` → spawns `Note` (2s early, recycled).
-
-**Editor Flow** — see `PROJECT_SPEC.md §4`:
-- **UI:** DAW grid. Rows=`Line`, Cols=beat/sub-beat slots.
-- **Interaction:** mouse click toggles note at `(Row, Col)`.
-- **Offset:** fractional times ok (e.g., 1.75 swing).
-- **Navigation:** `Left`/`Right` (kb or UI) → prev/next bar. No free scroll.
-- **Logic:** `TimeSignature` → `BeatStrength` (1.2/1.1/1.0) based on beat position.
-- **Auto-save:** `Esc` writes `chart_[difficulty].json` (Windows only).
+**Editor Flow:**
+1. Load `chart_[difficulty].json` (if exists).
+2. Mouse click toggles note at `(Row, Col)`.
+3. `Esc` writes `chart_[difficulty].json` (Windows only).
 
 ## 3. Persistence
 
 **`FlxSave`:**
-- Results/config. Key = `songName+difficulty`. Stores best `SongResult`.
-- Note: PDF "JSON" = `FlxSave` (serializes to JSON).
+- Save Name: `"Tech_terror_highscore"`
+- Key: `songName + "_" + difficulty`
+- Value: `SongResult` data.
+- **Logic:** `PlayState` builds `currentResult`. Loads `oldResult`. If `currentResult.score > oldResult.score`, overwrites save. Passes `currentResult` to ResultState.
 
-**JSON Files:** Editor chart I/O (Windows only). Files: `chart_[difficulty].json`.
+**JSON Files:**
+- `[name]_data.json`: Metadata (BPM, offset, etc).
+- `chart_[difficulty].json`: Note data (time, strength per line).
 
 **Self-Instantiation:**
-- `new SongData(name)` parses own `_data.json` in constructor.
-- `new Song(name)` creates own `SongData` and loads own cover/audio.
-- No external Loader class.
+- `new SongData(name)` parses own `_data.json`.
+- `new Song(name)` creates `SongData`, loads cover/audio.
+- No external Loader classes.

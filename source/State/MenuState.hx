@@ -39,7 +39,7 @@ class MenuState extends FlxState
 	{
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT)
+		if (FlxG.keys.anyJustPressed([LEFT, RIGHT]))
 		{
 			selected = Std.int(FlxMath.bound(selected + (FlxG.keys.justPressed.RIGHT ? 1 : -1), 0, numberOfSong - 1));
 			refresh();

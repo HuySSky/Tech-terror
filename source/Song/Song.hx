@@ -24,7 +24,7 @@ class Song extends FlxSprite
 		makeGraphic(W, H, FlxColor.GRAY, true);
 
 		var cover = new FlxSprite();
-		var coverPath = 'assets/songs/$name/cover.jpg';
+		var coverPath = 'assets/songs/$name/$name.jpg';
 		if (Assets.exists(coverPath))
 			cover.loadGraphic(coverPath);
 		else
