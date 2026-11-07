@@ -3,10 +3,21 @@ package state;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import song.SongData;
 
 /** Placeholder. */
 class EditorState extends FlxState
 {
+	var songData:SongData;
+	var difficulty:String;
+
+	public function new(songData:SongData, difficulty:String)
+	{
+		super();
+		this.songData = songData;
+		this.difficulty = difficulty;
+	}
+
 	override public function create():Void
 	{
 		super.create();

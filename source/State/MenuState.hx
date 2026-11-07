@@ -9,12 +9,13 @@ import song.*;
 
 class MenuState extends FlxState
 {
-	static var numberOfSong:Int = 0;
-
 	static var difficulties = ["easy", "medium", "hard"];
 
 	var scrollLine:SongScrollLine;
 	var infoText:FlxText;
+	var numberOfSong:Int;
+	var songData:SongData;
+	var difficulty:String;
 	var selected = 0;
 	var diff = 0;
 
@@ -48,16 +49,28 @@ class MenuState extends FlxState
 			diff = (diff + 1) % difficulties.length;
 			refresh();
 		}
-		else if (FlxG.keys.justPressed.ENTER) FlxG.switchState(PlayState.new);
-		else if (FlxG.keys.justPressed.SEVEN) FlxG.switchState(EditorState.new);
+		else if (FlxG.keys.justPressed.ENTER)
+			open(PlayState.new);
+		else if (FlxG.keys.justPressed.SEVEN)
+			open(EditorState.new);
 		else if (FlxG.keys.justPressed.ESCAPE) FlxG.switchState(LoadingState.new);
+	}
+
+	function open(next:(SongData, String) -> FlxState)
+	{
+		// capture local: state này bị destroy trước khi state mới được tạo
+		var s = songData;
+		var d = difficulty;
+		FlxG.switchState(() -> next(s, d));
 	}
 
 	function refresh()
 	{
-		var selectedDifficulty = difficulties[diff];
-		var selectedSongData = scrollLine.get(selected).data;
+		songData = scrollLine.get(selected).data;
+		difficulty = difficulties[diff];
 		scrollLine.select(selected);
-		infoText.text = '${selectedSongData.name}\n${selectedSongData.artist}\nBPM: ${selectedSongData.bpm}\nDifficulty: ${selectedDifficulty.toUpperCase()}';
+		var sec = Std.int(songData.duration);
+		var duration = Std.int(sec / 60) + ":" + StringTools.lpad(Std.string(sec % 60), "0", 2);
+		infoText.text = '${songData.name}\n${songData.artist}\nBPM: ${songData.bpm}\nDuration: $duration\nDifficulty: ${difficulty.toUpperCase()}';
 	}
 }

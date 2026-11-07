@@ -940,7 +940,7 @@ ApplicationMain.main = function() {
 ApplicationMain.create = function(config) {
 	var app = new openfl_display_Application();
 	ManifestResources.init(config);
-	app.meta.h["build"] = "12";
+	app.meta.h["build"] = "13";
 	app.meta.h["company"] = "HaxeFlixel";
 	app.meta.h["file"] = "Tech terror";
 	app.meta.h["name"] = "Tech terror";
@@ -5703,6 +5703,16 @@ StringTools.rtrim = function(s) {
 };
 StringTools.trim = function(s) {
 	return StringTools.ltrim(StringTools.rtrim(s));
+};
+StringTools.lpad = function(s,c,l) {
+	if(c.length <= 0) {
+		return s;
+	}
+	var buf_b = "";
+	l -= s.length;
+	while(buf_b.length < l) buf_b += c == null ? "null" : "" + c;
+	buf_b += s == null ? "null" : "" + s;
+	return buf_b;
 };
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
@@ -138881,8 +138891,33 @@ openfl_utils__$internal_format_amf3_AMF3Writer.prototype = {
 };
 var song_Song = function(name) {
 	flixel_FlxSprite.call(this);
-	this.data = new song_SongData(name);
-	this.makeGraphic(175,325,-8355712);
+	var d = new song_SongData(name);
+	this.data = d;
+	this.makeGraphic(175,325,-8355712,true);
+	var cover = new flixel_FlxSprite();
+	var coverPath = "assets/songs/" + name + "/cover.jpg";
+	if(openfl_utils_Assets.exists(coverPath)) {
+		cover.loadGraphic(coverPath);
+	} else {
+		var color = flixel_util_FlxColor._new();
+		var Alpha = 255;
+		if(Alpha == null) {
+			Alpha = 255;
+		}
+		color &= -16711681;
+		color |= 4587520;
+		color &= -65281;
+		color |= 17920;
+		color &= -256;
+		color |= 110;
+		color &= 16777215;
+		color |= (Alpha > 255 ? 255 : Alpha < 0 ? 0 : Alpha) << 24;
+		cover.makeGraphic(150,150,color);
+	}
+	this.stamp(cover,12,30);
+	var label = new flixel_text_FlxText(0,0,165,"" + d.name + "\n" + d.artist,18);
+	label.set_alignment("center");
+	this.stamp(label,5,200);
 };
 $hxClasses["song.Song"] = song_Song;
 song_Song.__name__ = "song.Song";
@@ -138907,6 +138942,7 @@ song_SongData.prototype = {
 	,timeSignature: null
 	,previewStart: null
 	,scrollSpeed: null
+	,duration: null
 	,load: function(songName) {
 		var json = JSON.parse(openfl_utils_Assets.getText("assets/songs/" + songName + "/" + songName + "_data.json"));
 		this.name = json.name;
@@ -138914,6 +138950,7 @@ song_SongData.prototype = {
 		this.bpm = json.bpm;
 		this.timeSignature = new song_TimeSignature(json.timeSignature);
 		this.previewStart = json.previewStart;
+		this.duration = openfl_utils_Assets.getSound("assets/songs/" + songName + "/" + songName + ".mp3").get_length() / 1000;
 		this.scrollSpeed = new haxe_ds_StringMap();
 		var _g = 0;
 		var _g1 = Reflect.fields(json.difficulty);
@@ -139001,14 +139038,18 @@ song_TimeSignature.prototype = {
 	,mediumBeats: null
 	,__class__: song_TimeSignature
 };
-var state_EditorState = function() {
+var state_EditorState = function(songData,difficulty) {
 	flixel_FlxState.call(this);
+	this.songData = songData;
+	this.difficulty = difficulty;
 };
 $hxClasses["state.EditorState"] = state_EditorState;
 state_EditorState.__name__ = "state.EditorState";
 state_EditorState.__super__ = flixel_FlxState;
 state_EditorState.prototype = $extend(flixel_FlxState.prototype,{
-	create: function() {
+	songData: null
+	,difficulty: null
+	,create: function() {
 		flixel_FlxState.prototype.create.call(this);
 		var t = new flixel_text_FlxText(0,0,flixel_FlxG.width,"EDITOR (placeholder)\nEsc: Menu",28);
 		t.set_alignment("center");
@@ -139097,13 +139138,16 @@ state_MenuState.__super__ = flixel_FlxState;
 state_MenuState.prototype = $extend(flixel_FlxState.prototype,{
 	scrollLine: null
 	,infoText: null
+	,numberOfSong: null
+	,songData: null
+	,difficulty: null
 	,selected: null
 	,diff: null
 	,create: function() {
 		flixel_FlxState.prototype.create.call(this);
 		this.scrollLine = new song_SongScrollLine();
 		this.add(this.scrollLine);
-		state_MenuState.numberOfSong = this.scrollLine.group.members.length;
+		this.numberOfSong = this.scrollLine.group.members.length;
 		this.add(new flixel_FlxSprite(0,flixel_FlxG.height / 2).makeGraphic(flixel_FlxG.width,flixel_FlxG.height / 2 | 0,-14671840));
 		this.infoText = new flixel_text_FlxText(20,flixel_FlxG.height / 2 + 20,flixel_FlxG.width - 40,"",24);
 		this.add(this.infoText);
@@ -139122,7 +139166,7 @@ state_MenuState.prototype = $extend(flixel_FlxState.prototype,{
 		if(tmp) {
 			var _this = flixel_FlxG.keys.justPressed;
 			var Value = this.selected + (_this.keyManager.checkStatusUnsafe(39,_this.status) ? 1 : -1);
-			var Max = state_MenuState.numberOfSong - 1;
+			var Max = this.numberOfSong - 1;
 			var lowerBound = Value < 0 ? 0 : Value;
 			this.selected = (Max != null && lowerBound > Max ? Max : lowerBound) | 0;
 			this.refresh();
@@ -139134,43 +139178,25 @@ state_MenuState.prototype = $extend(flixel_FlxState.prototype,{
 			} else {
 				var _this = flixel_FlxG.keys.justPressed;
 				if(_this.keyManager.checkStatusUnsafe(13,_this.status)) {
-					var nextState = flixel_util_typeLimit_NextState.fromMaker(function() {
-						return new state_PlayState();
-					});
-					var stateOnCall = flixel_FlxG.game._state;
-					flixel_FlxG.game._state.startOutro(function() {
-						if(flixel_FlxG.game._state == stateOnCall) {
-							flixel_FlxG.game._nextState = nextState;
-						} else {
-							var _this = flixel_FlxG.log;
-							_this.advanced("`onOutroComplete` was called after the state was switched. This will be ignored",_this.styles.warning,true,{ fileName : "flixel/FlxG.hx", lineNumber : 387, className : "flixel.FlxG", methodName : "switchState"});
-						}
+					this.open(function(songData,difficulty) {
+						return new state_PlayState(songData,difficulty);
 					});
 				} else {
 					var _this = flixel_FlxG.keys.justPressed;
 					if(_this.keyManager.checkStatusUnsafe(55,_this.status)) {
-						var nextState1 = flixel_util_typeLimit_NextState.fromMaker(function() {
-							return new state_EditorState();
-						});
-						var stateOnCall1 = flixel_FlxG.game._state;
-						flixel_FlxG.game._state.startOutro(function() {
-							if(flixel_FlxG.game._state == stateOnCall1) {
-								flixel_FlxG.game._nextState = nextState1;
-							} else {
-								var _this = flixel_FlxG.log;
-								_this.advanced("`onOutroComplete` was called after the state was switched. This will be ignored",_this.styles.warning,true,{ fileName : "flixel/FlxG.hx", lineNumber : 387, className : "flixel.FlxG", methodName : "switchState"});
-							}
+						this.open(function(songData,difficulty) {
+							return new state_EditorState(songData,difficulty);
 						});
 					} else {
 						var _this = flixel_FlxG.keys.justPressed;
 						if(_this.keyManager.checkStatusUnsafe(27,_this.status)) {
-							var nextState2 = flixel_util_typeLimit_NextState.fromMaker(function() {
+							var nextState = flixel_util_typeLimit_NextState.fromMaker(function() {
 								return new state_LoadingState();
 							});
-							var stateOnCall2 = flixel_FlxG.game._state;
+							var stateOnCall = flixel_FlxG.game._state;
 							flixel_FlxG.game._state.startOutro(function() {
-								if(flixel_FlxG.game._state == stateOnCall2) {
-									flixel_FlxG.game._nextState = nextState2;
+								if(flixel_FlxG.game._state == stateOnCall) {
+									flixel_FlxG.game._nextState = nextState;
 								} else {
 									var _this = flixel_FlxG.log;
 									_this.advanced("`onOutroComplete` was called after the state was switched. This will be ignored",_this.styles.warning,true,{ fileName : "flixel/FlxG.hx", lineNumber : 387, className : "flixel.FlxG", methodName : "switchState"});
@@ -139182,22 +139208,44 @@ state_MenuState.prototype = $extend(flixel_FlxState.prototype,{
 			}
 		}
 	}
+	,open: function(next) {
+		var s = this.songData;
+		var d = this.difficulty;
+		var nextState = flixel_util_typeLimit_NextState.fromMaker(function() {
+			return next(s,d);
+		});
+		var stateOnCall = flixel_FlxG.game._state;
+		flixel_FlxG.game._state.startOutro(function() {
+			if(flixel_FlxG.game._state == stateOnCall) {
+				flixel_FlxG.game._nextState = nextState;
+			} else {
+				var _this = flixel_FlxG.log;
+				_this.advanced("`onOutroComplete` was called after the state was switched. This will be ignored",_this.styles.warning,true,{ fileName : "flixel/FlxG.hx", lineNumber : 387, className : "flixel.FlxG", methodName : "switchState"});
+			}
+		});
+	}
 	,refresh: function() {
-		var selectedDifficulty = state_MenuState.difficulties[this.diff];
-		var selectedSongData = this.scrollLine.get(this.selected).get_data();
+		this.songData = this.scrollLine.get(this.selected).get_data();
+		this.difficulty = state_MenuState.difficulties[this.diff];
 		this.scrollLine.select(this.selected);
-		this.infoText.set_text("" + selectedSongData.name + "\n" + selectedSongData.artist + "\nBPM: " + selectedSongData.bpm + "\nDifficulty: " + selectedDifficulty.toUpperCase());
+		var sec = this.songData.duration | 0;
+		var duration = (sec / 60 | 0) + ":" + StringTools.lpad(Std.string(sec % 60),"0",2);
+		this.infoText.set_text("" + this.songData.name + "\n" + this.songData.artist + "\nBPM: " + this.songData.bpm + "\nDuration: " + duration + "\nDifficulty: " + this.difficulty.toUpperCase());
 	}
 	,__class__: state_MenuState
 });
-var state_PlayState = function() {
+var state_PlayState = function(songData,difficulty) {
 	flixel_FlxState.call(this);
+	this.songData = songData;
+	this.difficulty = difficulty;
 };
 $hxClasses["state.PlayState"] = state_PlayState;
 state_PlayState.__name__ = "state.PlayState";
 state_PlayState.__super__ = flixel_FlxState;
 state_PlayState.prototype = $extend(flixel_FlxState.prototype,{
-	create: function() {
+	songData: null
+	,difficulty: null
+	,create: function() {
 		flixel_FlxState.prototype.create.call(this);
 		var t = new flixel_text_FlxText(0,0,flixel_FlxG.width,"PLAY (placeholder)\nEnter: Result | 7: Editor | P: Pause (temp) | Esc: Menu",28);
 		t.set_alignment("center");
@@ -139214,6 +139262,7 @@ state_PlayState.prototype = $extend(flixel_FlxState.prototype,{
 		this.add(t);
 	}
 	,update: function(elapsed) {
+		var _gthis = this;
 		flixel_FlxState.prototype.update.call(this,elapsed);
 		var _this = flixel_FlxG.keys.justPressed;
 		if(_this.keyManager.checkStatusUnsafe(13,_this.status)) {
@@ -139233,7 +139282,7 @@ state_PlayState.prototype = $extend(flixel_FlxState.prototype,{
 			var _this = flixel_FlxG.keys.justPressed;
 			if(_this.keyManager.checkStatusUnsafe(55,_this.status)) {
 				var nextState1 = flixel_util_typeLimit_NextState.fromMaker(function() {
-					return new state_EditorState();
+					return new state_EditorState(_gthis.songData,_gthis.difficulty);
 				});
 				var stateOnCall1 = flixel_FlxG.game._state;
 				flixel_FlxG.game._state.startOutro(function() {
@@ -143127,8 +143176,8 @@ openfl_utils__$internal_TouchData.__pool = new lime_utils_ObjectPool(function() 
 openfl_utils__$internal_format_amf3_AMF3Array.__meta__ = { fields : { extra : { optional : null}}};
 song_Song.W = 175;
 song_Song.H = 325;
+song_Song.COVER = 150;
 song_SongScrollLine.GAP = 50;
-state_MenuState.numberOfSong = 0;
 state_MenuState.difficulties = ["easy","medium","hard"];
 ApplicationMain.main();
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);

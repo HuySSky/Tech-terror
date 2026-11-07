@@ -3,10 +3,21 @@ package state;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import song.SongData;
 
 /** Placeholder. */
 class PlayState extends FlxState
 {
+	var songData:SongData;
+	var difficulty:String;
+
+	public function new(songData:SongData, difficulty:String)
+	{
+		super();
+		this.songData = songData;
+		this.difficulty = difficulty;
+	}
+
 	override public function create():Void
 	{
 		super.create();
@@ -20,7 +31,7 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		if (FlxG.keys.justPressed.ENTER) FlxG.switchState(ResultState.new);
-		else if (FlxG.keys.justPressed.SEVEN) FlxG.switchState(EditorState.new);
+		else if (FlxG.keys.justPressed.SEVEN) FlxG.switchState(() -> new EditorState(songData, difficulty));
 		else if (FlxG.keys.justPressed.P)
 			openSubState(new PauseSubState());
 		else if (FlxG.keys.justPressed.ESCAPE) FlxG.switchState(MenuState.new);

@@ -11,6 +11,7 @@ class SongData
 	public var timeSignature:TimeSignature;
 	public var previewStart:Float;
 	public var scrollSpeed:Map<String, Float>;
+	public var duration:Float; // seconds
 
 	public function new(songName:String)
 	{
@@ -26,6 +27,7 @@ class SongData
 		this.bpm = json.bpm;
 		this.timeSignature = new TimeSignature(json.timeSignature);
 		this.previewStart = json.previewStart;
+		this.duration = Assets.getSound('assets/songs/$songName/$songName.mp3').length / 1000;
 
 		this.scrollSpeed = new Map<String, Float>();
 		for (diff in Reflect.fields(json.difficulty))
