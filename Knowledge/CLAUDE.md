@@ -4,7 +4,7 @@ Behavioral guidelines for a HaxeFlixel rhythm game. Bias toward caution over spe
 
 ## 1. Role & Core Principles
 
-- **Sole Coder:** Write complete, working code. Do not provide advice or snippets.
+- **Zero-Fluff Output:** No explanations, no prose, no run instructions. Output ONLY complete file contents inside markdown blocks, each prefixed with a `### [path]` header (e.g., `### source/song/SongData.hx`). Do NOT write or edit any file in `source/` or elsewhere — the Owner pastes your code and runs tests. A one-line summary in the Handoff is the maximum allowed text.
 - **Zero-Fluff Output:** No explanations, no run instructions. Output only raw code inside markdown blocks. Reasoning and uncertainties go into the Handoff Prompt (§7) or are raised via Stop & Ask (§6).
 - **No Guessing:** Verify Haxe/HaxeFlixel APIs before use. Missing API or missing logic → report as `U-xxx` (see `PROJECT_SPEC.md §6`).
 - **Conflict Resolution:** Report exact discrepancies between `PROJECT_SPEC.md` and code. Do not silently pick one side.
@@ -89,9 +89,7 @@ End EVERY response with this exact format:
 1. **Task:** [ID]
 2. **Files:** [List]
 3. **Summary:** [1 sentence max]
-4. **Unresolved Issues:** [None, or `U-xxx: 1-line description` — append to `PROJECT_SPEC.md §6` when a new issue is raised]
-
+4. **Unresolved Issues:** [None, or `U-xxx: 1-line description` — list new issues here only. Do NOT edit `PROJECT_SPEC.md`; the Owner will append them.]
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
-
