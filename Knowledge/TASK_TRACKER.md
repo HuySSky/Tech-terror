@@ -12,9 +12,9 @@
 - [x] **M4.1 — Editor UI: Grid:** DAW grid, rows=lines, cols=beats/sub-beats. L/R bar nav.
 - [x] **M4.1b — Editor UI Refinement:** Light background, arrows, column numbers, continuous rows, beat/bar separators.
 - [x] **M4.1c — Refactor EditorState:** Split into EditorPanel, EditorGrid, EditorNavigation. Orchestrated by EditorState.
+- [x] **M4.2 — Editor Interaction:** Mouse click toggle notes.
 
 ## Next (Unblocked - Exact Order)
-- [ ] **M4.2 — Editor Interaction:** Mouse click toggle notes.
 - [ ] **M4.3 — Editor Settings:** UI for `scrollSpeed`, `bpm`, #lines.
 - [ ] **M5.1 — Editor Save:** Auto-save `chart_[difficulty].json` on `Esc`. Assign `BeatStrength` via `TimeSignature`.
 - [ ] **M5.2 — Editor Load:** Read existing `chart_[difficulty].json`.
