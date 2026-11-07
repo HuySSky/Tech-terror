@@ -1,19 +1,16 @@
 # EXAMPLES — Anti-patterns in Tech Terror
-
-This file guides Claude on "Simplicity First", "Surgical Changes", and "No reinventing the wheel." Learn from these strict contrasts.
+> Guides: Simplicity, Surgical Changes, No Reinventing.
 
 ## 1. Simplicity vs Over-engineering
 
-**❌ WRONG:** Writing custom validators, helper functions, or throwing errors for data we generated ourselves.
-
+❌ Custom validators/helpers/errors for self-generated data:
 ```haxe
 class DataValidator { 
     public static function checkBpm(bpm:Float):Bool { ... } 
 }
 ```
 
-**✅ RIGHT:** Map data directly. If the JSON is broken, we fix the JSON file, not the code.
-
+✅ Map directly. Broken JSON → fix JSON file, not code:
 ```haxe
 var json = haxe.Json.parse(jsonString);
 var data = new SongData();
@@ -23,43 +20,45 @@ data.name = json.name;
 
 ## 2. No Defensive Programming
 
-**❌ WRONG:** Adding null checks for internal objects guaranteed to exist.
-
+❌ Null checks for guaranteed-internal objects:
 ```haxe
 if (songData == null) { trace("error"); return; }
-if (songData.timeSignature.length != 2) { throw "Invalid signature"; }
+if (songData.bpm <= 0) { throw "Invalid BPM"; }
 ```
 
-**✅ RIGHT:** Assume internal data is correct.
-
+✅ Assume internal data correct:
 ```haxe
-d.timeSignature = [Std.int(json.timeSignature[0]), Std.int(json.timeSignature[1])];
+d.bpm = json.bpm;
+d.name = json.name;
+d.timeSignature = json.timeSignature; // String "4/4", parsed by TimeSignature class
 ```
 
 ## 3. Surgical Changes Only
 
-**❌ WRONG:** When asked to "Add audio load", you rename variables, add docstrings, change single quotes to double, and reformat.
-
-**✅ RIGHT:** Only add the requested `loadAudio()` function. Touch nothing else.
+❌ "Add audio load" → rename vars, docstrings, quote changes, reformat.
+✅ Only add requested `loadAudio()`. Touch nothing else.
 
 ## 4. Use Built-in Libraries
 
-**❌ WRONG:** Writing custom loops to clamp health.
-
+❌ Custom health clamp:
 ```haxe
 if (curHealth > maxHealth) { curHealth = maxHealth; }
 if (curHealth < 0) { curHealth = 0; }
 ```
+✅ `curHealth = Math.max(0, Math.min(curHealth, maxHealth));`
 
-**✅ RIGHT:** Use Haxe standard math.
+❌ Custom keyboard listeners.
+✅ `if (FlxG.keys.justPressed.LEFT) { ... }`
 
+## 5. Object Self-Instantiation
+
+❌ Separate Loader:
 ```haxe
-curHealth = Math.max(0, Math.min(curHealth, maxHealth));
+var jsonData = FileLoader.load("song.json"); 
+var song = new SongData(jsonData);
 ```
 
-**❌ WRONG:** Writing custom keyboard listeners.
-
-**✅ RIGHT:** 
+✅ Object self-loads:
 ```haxe
-if (FlxG.keys.justPressed.LEFT) { ... }
+var song = new SongData("songName"); // or SongData.load("songName")
 ```

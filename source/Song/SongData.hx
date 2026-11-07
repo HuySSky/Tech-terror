@@ -1,29 +1,31 @@
 package song;
 
+import haxe.Json;
+import openfl.Assets;
+
 class SongData
 {
 	public var name:String;
 	public var artist:String;
 	public var bpm:Float;
-	public var timeSignature:Array<Int>;
+	public var timeSignature:String;
 	public var previewStart:Float;
 	public var scrollSpeed:Map<String, Float>;
 
-	public function new() {}
-
-	public static function fromJson(json:Dynamic):SongData
+	public function new(name:String)
 	{
-		var d = new SongData();
-		d.name = json.name;
-		d.artist = json.artist;
-		d.bpm = json.bpm;
-		d.timeSignature = [Std.int(json.timeSignature[0]), Std.int(json.timeSignature[1])];
-		d.previewStart = json.previewStart;
+		var rawJson = Assets.getText("assets/songs/" + name + "_data.json");
+		var json = Json.parse(rawJson);
 
-		d.scrollSpeed = new Map<String, Float>();
+		this.name = json.name;
+		this.artist = json.artist;
+		this.bpm = json.bpm;
+		this.timeSignature = json.timeSignature;
+		this.previewStart = json.previewStart;
+
+		this.scrollSpeed = new Map<String, Float>();
 		for (key in Reflect.fields(json.scrollSpeed))
-			d.scrollSpeed.set(key, Reflect.field(json.scrollSpeed, key));
-
-		return d;
+			this.scrollSpeed.set(key, Reflect.field(json.scrollSpeed, key));
 	}
+
 }

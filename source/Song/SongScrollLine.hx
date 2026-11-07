@@ -2,19 +2,21 @@ package song;
 
 import flixel.FlxG;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import openfl.Assets;
 
-class SongScrollLine extends FlxTypedSpriteGroup<SongSprite>
+class SongScrollLine extends FlxTypedSpriteGroup<Song>
 {
 	static inline var GAP = 50;
 
-	public function new(songs:Array<SongData>)
+	public function new()
 	{
 		super();
-		for (i => d in songs)
+		var songs = loadAll();
+		for (i => name in songs)
 		{
-			var s = new SongSprite(d);
-			s.setPosition(i * (SongSprite.W + GAP), FlxG.height / 4 - SongSprite.H / 2);
-			add(s);
+			var song = new Song(name);
+			song.setPosition(i * (Song.W + GAP), FlxG.height / 4 - Song.H / 2);
+			add(song);
 		}
 	}
 
@@ -23,6 +25,33 @@ class SongScrollLine extends FlxTypedSpriteGroup<SongSprite>
 	{
 		for (i => s in members)
 			s.scale.set(i == index ? 1.2 : 1, i == index ? 1.2 : 1);
-		x = FlxG.width / 2 - (index * (SongSprite.W + GAP) + SongSprite.W / 2);
+		x = FlxG.width / 2 - (index * (Song.W + GAP) + Song.W / 2);
+	}
+
+	public function get(index:Int):Song
+	{
+		return members[index];
+	}
+
+	private function loadAll():Array<String>
+	{
+		var result:Array<String> = [];
+		var listText = Assets.getText("assets/songs/songs.txt");
+
+		if (listText == null)
+		{
+			trace("[SongLoader] WARN: missing songs.txt");
+			return result;
+		}
+
+		for (line in listText.split("\n"))
+		{
+			var songName = StringTools.trim(line);
+			if (songName == "")
+				continue;
+
+			result.push(songName);
+		}
+		return result;
 	}
 }

@@ -9,12 +9,10 @@ import song.*;
 
 class MenuState extends FlxState
 {
-	public static var selectedSong:SongData;
-	public static var selectedDifficulty:String;
+	static var numberOfSong:Int = 0;
 
 	static var difficulties = ["easy", "medium", "hard"];
 
-	var songs:Array<SongData>;
 	var scrollLine:SongScrollLine;
 	var infoText:FlxText;
 	var selected = 0;
@@ -24,9 +22,10 @@ class MenuState extends FlxState
 	{
 		super.create();
 
-		songs = SongLoader.loadAll();
-		scrollLine = new SongScrollLine(songs);
+		scrollLine = new SongScrollLine();
 		add(scrollLine);
+
+		numberOfSong = scrollLine.members.length;
 
 		add(new FlxSprite(0, FlxG.height / 2).makeGraphic(FlxG.width, Std.int(FlxG.height / 2), 0xFF202020));
 		infoText = new FlxText(20, FlxG.height / 2 + 20, FlxG.width - 40, "", 24);
@@ -41,7 +40,7 @@ class MenuState extends FlxState
 
 		if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT)
 		{
-			selected = Std.int(FlxMath.bound(selected + (FlxG.keys.justPressed.RIGHT ? 1 : -1), 0, songs.length - 1));
+			selected = Std.int(FlxMath.bound(selected + (FlxG.keys.justPressed.RIGHT ? 1 : -1), 0, numberOfSong - 1));
 			refresh();
 		}
 		else if (FlxG.keys.justPressed.TAB)
@@ -56,9 +55,9 @@ class MenuState extends FlxState
 
 	function refresh()
 	{
-		selectedSong = songs[selected];
-		selectedDifficulty = difficulties[diff];
+		var selectedDifficulty = difficulties[diff];
+		var selectedSongData = scrollLine.get(selected).data;
 		scrollLine.select(selected);
-		infoText.text = '${selectedSong.name}\n${selectedSong.artist}\nBPM: ${selectedSong.bpm}\nDifficulty: ${selectedDifficulty.toUpperCase()}';
+		infoText.text = '${selectedSongData.name}\n${selectedSongData.artist}\nBPM: ${selectedSongData.bpm}\nDifficulty: ${selectedDifficulty.toUpperCase()}';
 	}
 }
