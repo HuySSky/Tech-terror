@@ -9,9 +9,11 @@
 - [x] **M2.1b — Fix Data Arch:** `SongData` parse (`timeSignature`→`TimeSignature`, `difficulty`→`scrollSpeed` map). `TimeSignature` class created. `SongLoader.hx` removed. `SongScrollLine` reads `songs.txt` + creates `new Song(name)`.
 - [x] **M2.2 — Fix Menu Visuals:** `Song` load 150x150 cover (top), render name+artist (bottom). `MenuState` pass `songData`+`difficulty` via constructor. Info Panel: show Audio Duration.
 - [x] **M3.1 — Fix State Constructors & Keys:** Add constructors to `PlayState`/`EditorState` (`songData`, `difficulty`). Fix `PlayState` keys (Quit `Q`/`Backspace`, Pause `Esc`/`Enter`). Fix `EditorState` exit `Esc`.
+- [x] **M4.1 — Editor UI: Grid:** DAW grid, rows=lines, cols=beats/sub-beats. L/R bar nav.
+- [x] **M4.1b — Editor UI Refinement:** Light background, arrows, column numbers, continuous rows, beat/bar separators.
+- [x] **M4.1c — Refactor EditorState:** Split into EditorPanel, EditorGrid, EditorNavigation. Orchestrated by EditorState.
 
 ## Next (Unblocked - Exact Order)
-- [ ] **M4.1 — Editor UI: Grid:** DAW grid, rows=lines, cols=beats/sub-beats. L/R bar nav.
 - [ ] **M4.2 — Editor Interaction:** Mouse click toggle notes.
 - [ ] **M4.3 — Editor Settings:** UI for `scrollSpeed`, `bpm`, #lines.
 - [ ] **M5.1 — Editor Save:** Auto-save `chart_[difficulty].json` on `Esc`. Assign `BeatStrength` via `TimeSignature`.

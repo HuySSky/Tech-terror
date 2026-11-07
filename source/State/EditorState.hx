@@ -1,15 +1,25 @@
 package state;
 
+import editor.*;
 import flixel.FlxG;
 import flixel.FlxState;
-import flixel.text.FlxText;
 import song.SongData;
 
-/** Placeholder. */
 class EditorState extends FlxState
 {
+	static inline var SUB_BEAT = 0.25;
+
 	var songData:SongData;
 	var difficulty:String;
+
+	var lines:Array<String> = ["Kick", "Snare", "Hat", "Ride"];
+	var bpm:Float;
+	var beatsPerMeasure:Int;
+	var totalBars:Int;
+
+	var panel:EditorPanel;
+	var grid:EditorGrid;
+	var nav:EditorNavigation;
 
 	public function new(songData:SongData, difficulty:String)
 	{
@@ -21,15 +31,41 @@ class EditorState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		var t = new FlxText(0, 0, FlxG.width, "EDITOR (placeholder)\nEsc: Menu", 28);
-		t.alignment = CENTER;
-		t.screenCenter(Y);
-		add(t);
+
+		FlxG.camera.bgColor = 0xFFE8E8E8;
+
+		bpm = songData.bpm;
+		beatsPerMeasure = songData.timeSignature.beatsPerMeasure;
+		totalBars = Math.ceil(songData.duration / (60 / bpm * beatsPerMeasure));
+
+		grid = new EditorGrid(bpm, beatsPerMeasure, lines, SUB_BEAT);
+		grid.totalBars = totalBars;
+		add(grid);
+
+		panel = new EditorPanel(bpm);
+		add(panel);
+
+		nav = new EditorNavigation(navigate);
+		add(nav);
+
+		panel.updateInfo(grid.getCurrentBar(), totalBars, bpm, beatsPerMeasure);
 	}
 
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		if (FlxG.keys.justPressed.ESCAPE) FlxG.switchState(MenuState.new);
+
+		if (FlxG.keys.justPressed.LEFT)
+			navigate(-1);
+		else if (FlxG.keys.justPressed.RIGHT)
+			navigate(1);
+		else if (FlxG.keys.justPressed.ESCAPE)
+			FlxG.switchState(MenuState.new);
+	}
+
+	function navigate(dir:Int):Void
+	{
+		grid.changeBar(dir);
+		panel.updateInfo(grid.getCurrentBar(), totalBars, bpm, beatsPerMeasure);
 	}
 }

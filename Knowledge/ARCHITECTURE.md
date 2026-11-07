@@ -35,10 +35,14 @@
 3. Adds to horizontal line. Selected scales ×1.2, centered.
 4. Info Panel reads `SongResult.loadData()` for High Score display.
 
-**Editor Flow:**
-1. Load `chart_[difficulty].json` (if exists).
-2. Mouse click toggles note at `(Row, Col)`.
-3. `Esc` writes `chart_[difficulty].json` (Windows only).
+**Editor Flow** — see `PROJECT_SPEC.md §4`:
+- **Architecture:** `EditorState` acts as orchestrator (Source of Truth). UI is modularized into `EditorPanel`, `EditorGrid`, and `EditorNavigation`.
+- **EditorPanel:** Top UI panel. Displays BPM, Bar count, Beats. (Future: editable settings).
+- **EditorGrid:** Extends `FlxTypedSpriteGroup`. Draws rows/cols, beat/bar separators. Holds `currentBar` and `totalBars`. Has `rebuild()` to redraw when params change.
+- **EditorNavigation:** `<` and `>` arrows. Handles mouse clicks via `onNavigate` callback.
+- **Interaction:** Mouse click toggles note at `(Row, Col)` (Pending M4.2).
+- **Navigation:** `Left`/`Right` (keyboard or UI arrows) → prev/next bar.
+- **Auto-save:** `Esc` writes `chart_[difficulty].json` (Windows only).
 
 ## 3. Persistence
 

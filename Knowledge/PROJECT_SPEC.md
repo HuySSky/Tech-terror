@@ -45,9 +45,9 @@
   |---------|--------|
   | Perfect | 100    |
   | Precise | 85     |
-  | Tight   | 75 |
-  | Loose   | 70 |
-  | Off     | 60 |
+  | Tight   | 75     |
+  | Loose   | 70     |
+  | Off     | 60     |
   | Miss    | 0      |
 - **Rank:** SS≥95, S≥90, A≥80, B≥60, C≥50, D≥30, F<30.
 - **Status:** `fail` (hp≤0), `clear` (hp>0), `pass` (clear AND acc≥50%).
@@ -104,6 +104,12 @@
   - `loadData(save:FlxSave, songName, diff):Bool` → reads save.
 - **`Line` / `LineSprite` / `NoteGenerator` / `Note`:** `Note(sprite, hitTime, strength)`.
 
+- **Editor Objects (Modular):**
+  - **`EditorState`**: Orchestrator. Holds `songData`, `bpm`, `beatsPerMeasure`. Instantiates and links UI components.
+  - **`EditorPanel`**: Top UI panel. `updateInfo(bar, totalBars, bpm, beats)`.
+  - **`EditorGrid`**: Extends `FlxTypedSpriteGroup`. Draws rows, columns, beat lines. Holds `currentBar`. `changeBar(dir)` calls `rebuild()`.
+  - **`EditorNavigation`**: Extends `FlxTypedSpriteGroup`. Renders `<` and `>`. Uses `onNavigate:Int->Void` callback on mouse click.
+
 ## 5. UI Layouts & Controls
 
 **Menu Layout:**
@@ -124,7 +130,10 @@
 - DAW grid. Rows=`Line`, Cols=beat/sub-beat slots (`subBeat` default 0.25 → 16 cols/bar for 4/4).
 - **Grid Math:** `columnsPerBar = beatsPerMeasure / subBeat`.
 - **BeatStrength:** `b = floor(t mod beatsPerMeasure)`. `b ∈ strongBeats`→1.2; `b ∈ mediumBeats`→1.1; else 1.0.
-- **Controls:** Mouse click (toggle note), `Left/Right` (prev/next bar), `Esc` (Auto-save JSON, exit).
+- **Editor Controls:**
+  - `Left`/`Right` (kb) or mouse click on `<` `>` arrows: prev/next bar.
+  - Mouse click (grid): toggle note (M4.2).
+  - `Esc`: Auto-save JSON, exit.
 - **Settings:** Can adjust scrollSpeed, bpm, #lines (writes to `_data.json` + chart). `subBeat` is Editor-only.
 
 ## 6. Unresolved (DO NOT GUESS — Stop and Ask)
