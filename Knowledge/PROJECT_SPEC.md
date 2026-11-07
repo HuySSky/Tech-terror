@@ -45,9 +45,9 @@
   |---------|--------|
   | Perfect | 100    |
   | Precise | 85     |
-  | Tight   | TBD (U-034) |
-  | Loose   | TBD (U-034) |
-  | Off     | TBD (U-034) |
+  | Tight   | 75 |
+  | Loose   | 70 |
+  | Off     | 60 |
   | Miss    | 0      |
 - **Rank:** SS≥95, S≥90, A≥80, B≥60, C≥50, D≥30, F<30.
 - **Status:** `fail` (hp≤0), `clear` (hp>0), `pass` (clear AND acc≥50%).
