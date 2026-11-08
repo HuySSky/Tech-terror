@@ -5,17 +5,18 @@ import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.util.FlxSignal;
 
 class EditorNavigation extends FlxTypedSpriteGroup<FlxSprite>
 {
+	public final onNavigate = new FlxTypedSignal<Int->Void>();
+
 	var left:FlxText;
 	var right:FlxText;
-	var onNavigate:Int->Void;
 
-	public function new(onNavigate:Int->Void)
+	public function new()
 	{
 		super();
-		this.onNavigate = onNavigate;
 
 		left = new FlxText(1030, 130, 0, "<", 64);
 		left.color = FlxColor.BLACK;
@@ -33,9 +34,9 @@ class EditorNavigation extends FlxTypedSpriteGroup<FlxSprite>
 		if (FlxG.mouse.justPressed)
 		{
 			if (FlxG.mouse.overlaps(left))
-				onNavigate(-1);
+				onNavigate.dispatch(-1);
 			else if (FlxG.mouse.overlaps(right))
-				onNavigate(1);
+				onNavigate.dispatch(1);
 		}
 	}
 }

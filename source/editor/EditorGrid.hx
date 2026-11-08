@@ -23,67 +23,27 @@ class EditorGrid extends FlxTypedSpriteGroup<FlxSprite>
 	public var totalBars:Int;
 	public var notes:Map<String, Array<Float>> = new Map();
 	public var subBeat:Float = 0.25;
+	public var currentBar(default, set):Int = 0;
 
-	var bpm:Float;
 	var beatsPerMeasure:Int;
 	var lines:Array<String>;
 	var columnsPerBar:Int;
-	var currentBar:Int = 0;
+	var cells:Array<Array<FlxSprite>> = [];
 
-	public function new(initialBpm:Float, initialBeatsPerMeasure:Int, initialTotalBars:Int, lines:Array<String>, subBeat:Float)
+	public function new()
 	{
 		super();
+	}
+
+	public function load(beatsPerMeasure:Int, totalBars:Int, lines:Array<String>, subBeat:Float):Void
+	{
+		this.beatsPerMeasure = beatsPerMeasure;
+		this.totalBars = totalBars;
 		this.lines = lines;
 		this.subBeat = subBeat;
+		columnsPerBar = Std.int(beatsPerMeasure / subBeat);
 		for (l in lines)
 			notes.set(l, []);
-		rebuild(initialBpm, initialBeatsPerMeasure, initialTotalBars);
-	}
-
-	override public function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-
-		if (!FlxG.mouse.justPressed)
-			return;
-
-		var mx = FlxG.mouse.x;
-		var my = FlxG.mouse.y;
-		if (mx < GRID_X || mx >= GRID_X + GRID_W || my < ROW_Y || my >= ROW_Y + lines.length * ROW_PITCH)
-			return;
-
-		var row = Std.int((my - ROW_Y) / ROW_PITCH);
-		if ((my - ROW_Y) - row * ROW_PITCH >= ROW_H)
-			return;
-		var col = Std.int((mx - GRID_X) / (GRID_W / columnsPerBar));
-
-		var absoluteTime = (currentBar * beatsPerMeasure) + (col * subBeat);
-		var list = notes.get(lines[row]);
-		for (t in list)
-		{
-			if (Math.abs(t - absoluteTime) < EPSILON)
-			{
-				list.remove(t);
-				rebuild(bpm, beatsPerMeasure, totalBars);
-				return;
-			}
-		}
-		list.push(absoluteTime);
-		rebuild(bpm, beatsPerMeasure, totalBars);
-	}
-
-	public function rebuild(newBpm:Float, newBeatsPerMeasure:Int, newTotalBars:Int):Void
-	{
-		bpm = newBpm;
-		beatsPerMeasure = newBeatsPerMeasure;
-		totalBars = newTotalBars;
-		columnsPerBar = Std.int(beatsPerMeasure / subBeat);
-
-		for (m in members.copy())
-		{
-			remove(m, true);
-			m.destroy();
-		}
 
 		var colW:Float = GRID_W / columnsPerBar;
 		var beatCols = Std.int(1 / subBeat);
@@ -115,25 +75,60 @@ class EditorGrid extends FlxTypedSpriteGroup<FlxSprite>
 			}
 			row.drawRect(0, 0, 4, ROW_H, FlxColor.BLACK);
 			add(row);
-			for (t in notes.get(lines[r]))
+			var rowCells:Array<FlxSprite> = [];
+			for (c in 0...columnsPerBar)
 			{
-				var col = Math.round((t - currentBar * beatsPerMeasure) / subBeat);
-				if (col < 0 || col >= columnsPerBar)
-					continue;
-				var note = new FlxSprite(GRID_X + col * colW + 2, y + 2).makeGraphic(Std.int(colW) - 4, ROW_H - 4, FlxColor.RED);
+				var note = new FlxSprite(GRID_X + c * colW + 2, y + 2).makeGraphic(Std.int(colW) - 4, ROW_H - 4, FlxColor.RED);
+				note.visible = false;
 				add(note);
+				rowCells.push(note);
 			}
+			cells.push(rowCells);
 		}
 	}
 
-	public function changeBar(amount:Int):Void
+	override public function update(elapsed:Float):Void
 	{
-		currentBar = Std.int(FlxMath.bound(currentBar + amount, 0, totalBars - 1));
-		rebuild(bpm, beatsPerMeasure, totalBars);
+		super.update(elapsed);
+
+		if (!FlxG.mouse.justPressed)
+			return;
+
+		var mx = FlxG.mouse.x;
+		var my = FlxG.mouse.y;
+		if (mx < GRID_X || mx >= GRID_X + GRID_W || my < ROW_Y || my >= ROW_Y + lines.length * ROW_PITCH)
+			return;
+
+		var row = Std.int((my - ROW_Y) / ROW_PITCH);
+		if ((my - ROW_Y) - row * ROW_PITCH >= ROW_H)
+			return;
+		var col = Std.int((mx - GRID_X) / (GRID_W / columnsPerBar));
+
+		var absoluteTime = (currentBar * beatsPerMeasure) + (col * subBeat);
+		var list = notes.get(lines[row]);
+		var existing = Lambda.find(list, t -> Math.abs(t - absoluteTime) < EPSILON);
+		if (existing != null)
+			list.remove(existing);
+		else
+			list.push(absoluteTime);
+		cells[row][col].visible = existing == null;
 	}
 
-	public function getCurrentBar():Int
+	function set_currentBar(value:Int):Int
 	{
+		currentBar = Std.int(FlxMath.bound(value, 0, totalBars - 1));
+
+		for (r in 0...lines.length)
+		{
+			for (cell in cells[r])
+				cell.visible = false;
+			for (t in notes.get(lines[r]))
+			{
+				var col = Math.round((t - currentBar * beatsPerMeasure) / subBeat);
+				if (col >= 0 && col < columnsPerBar)
+					cells[r][col].visible = true;
+			}
+		}
 		return currentBar;
 	}
 }

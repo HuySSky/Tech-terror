@@ -38,31 +38,19 @@ class EditorState extends FlxState
 		beatsPerMeasure = songData.timeSignature.beatsPerMeasure;
 		totalBars = Math.ceil(songData.duration / (60 / bpm * beatsPerMeasure));
 
-		grid = new EditorGrid(bpm, beatsPerMeasure, totalBars, lines, SUB_BEAT);
+		grid = new EditorGrid();
+		grid.load(beatsPerMeasure, totalBars, lines, SUB_BEAT);
 		add(grid);
 
-		panel = new EditorPanel(bpm, 1.0, difficulty, function(newBpm)
-		{
-			trace("New BPM: " + newBpm);
-		}, function(newScroll)
-		{
-			trace("New Scroll: " + newScroll);
-		}, function(newDiff)
-		{
-			trace("New Diff: " + newDiff);
-		}, function()
-		{
-			trace("SAVE clicked");
-		}, function()
-		{
-			trace("LOAD clicked");
-		});
+		panel = new EditorPanel();
+		panel.init(bpm, 1.0, difficulty);
 		add(panel);
 
-		nav = new EditorNavigation(navigate);
+		nav = new EditorNavigation();
+		nav.onNavigate.add(navigate);
 		add(nav);
 
-		panel.updateInfo(grid.getCurrentBar(), totalBars, beatsPerMeasure);
+		panel.updateInfo(grid.currentBar, totalBars, beatsPerMeasure);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -79,7 +67,7 @@ class EditorState extends FlxState
 
 	function navigate(dir:Int):Void
 	{
-		grid.changeBar(dir);
-		panel.updateInfo(grid.getCurrentBar(), totalBars, beatsPerMeasure);
+		grid.currentBar += dir;
+		panel.updateInfo(grid.currentBar, totalBars, beatsPerMeasure);
 	}
-}
+} 
