@@ -103,10 +103,10 @@ class EditorPanel extends FlxTypedSpriteGroup<FlxSprite>
 		else if (FlxG.mouse.overlaps(diffUp))
 			diffIndex += 1;
 		else if (FlxG.mouse.overlaps(saveBtn))
-			continue;
+		{}
 		// onSave.dispatch();
 		else if (FlxG.mouse.overlaps(loadBtn))
-			continue;
+		{}
 		// onLoad.dispatch();
 	}
 

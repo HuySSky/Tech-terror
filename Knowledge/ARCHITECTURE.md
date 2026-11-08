@@ -35,14 +35,22 @@
 3. Adds to horizontal line. Selected scales ×1.2, centered.
 4. Info Panel reads `SongResult.loadData()` for High Score display.
 
-**Editor Flow** — see `PROJECT_SPEC.md §4`:
-- **Architecture:** `EditorState` acts as orchestrator (Source of Truth). UI is modularized into `EditorPanel`, `EditorGrid`, and `EditorNavigation`.
-- **EditorPanel:** Top UI panel. Displays BPM, Bar count, Beats. (Future: editable settings).
-- **EditorGrid:** Extends `FlxTypedSpriteGroup`. Draws rows/cols, beat/bar separators. Holds `currentBar` and `totalBars`. Has `rebuild()` to redraw when params change.
-- **EditorNavigation:** `<` and `>` arrows. Handles mouse clicks via `onNavigate` callback.
-- **Interaction:** Mouse click toggles note at `(Row, Col)` (Pending M4.2).
-- **Navigation:** `Left`/`Right` (keyboard or UI arrows) → prev/next bar.
-- **Auto-save:** `Esc` writes `chart_[difficulty].json` (Windows only).
+**Editor Flow:**
+- **Architecture (3-Tier):** `EditorState` acts as orchestrator. UI is split by lifecycle:
+  - `EditorPanel` (Top UI): Holds BPM, ScrollSpeed, Difficulty, Sub-beat. Emits signals on change. Does NOT hold note data.
+  - `EditorGrid` (Layout): Draws rows, cols, separators, icons. Holds `currentBar`, `totalBars`, `beatsPerMeasure`, `subBeat`. Does NOT know notes exist.
+  - `NoteLayer` (Data + Render): Holds `Array<NoteEntity>`. Renders notes onto the grid. Does NOT draw geometry.
+- **Data Flow & Interaction:**
+  - **Click Grid:** `EditorState` catches click → `grid.cellAt()` → `noteLayer.toggle()`. (Toggles note at `currentBar`, `line`, `col`).
+  - **Change Sub-beat:** Panel emits signal → `EditorState` calls `grid.rebuild()` (redraws columns) → `noteLayer.refreshVisuals()`. Notes DO NOT move (pixel position derived from absolute beat).
+  - **Change BeatsPerMeasure:** Panel emits signal → `grid.rebuild()` → `noteLayer.refreshVisuals()`. Note bar/step calculations update, but `absBeat` is immutable.
+  - **Change Lines (Add/Remove):** Panel emits signal → `grid.rebuild()` + `noteLayer.clearLine()` for removed lines → `refreshVisuals()`.
+  - **Navigate Bars:** `grid.currentBar` setter clamps → `noteLayer.refreshVisuals()` (hides/shows notes outside current bar).
+- **Note Properties (`NoteEntity`):**
+  - `absBeat:Float`: Source of truth. Never changes when grid layout changes.
+  - `offsetMs:Float`: Timing offset in ms (for PlayState).
+  - Length: Always fixed to 1/8 of a beat, regardless of current `subBeat`.
+- **Save (M5.1):** `EditorState` reads `noteLayer.getAll()`. Converts `absBeat` to `time`, calculates `strength` via `TimeSignature`, exports `offsetMs` as `offset`. Writes to JSON.
 
 ## 3. Persistence
 

@@ -940,7 +940,7 @@ ApplicationMain.main = function() {
 ApplicationMain.create = function(config) {
 	var app = new openfl_display_Application();
 	ManifestResources.init(config);
-	app.meta.h["build"] = "19";
+	app.meta.h["build"] = "20";
 	app.meta.h["company"] = "HaxeFlixel";
 	app.meta.h["file"] = "Tech terror";
 	app.meta.h["name"] = "Tech terror";
@@ -4131,16 +4131,6 @@ Lambda.count = function(it,pred) {
 	}
 	return n;
 };
-Lambda.find = function(it,f) {
-	var v = $getIterator(it);
-	while(v.hasNext()) {
-		var v1 = v.next();
-		if(f(v1)) {
-			return v1;
-		}
-	}
-	return null;
-};
 var ManifestResources = function() { };
 $hxClasses["ManifestResources"] = ManifestResources;
 ManifestResources.__name__ = "ManifestResources";
@@ -6217,6 +6207,9 @@ Xml.prototype = {
 	}
 	,__class__: Xml
 };
+var editor_EditorConstants = function() { };
+$hxClasses["editor.EditorConstants"] = editor_EditorConstants;
+editor_EditorConstants.__name__ = "editor.EditorConstants";
 var flixel_FlxObject = function(x,y,width,height) {
 	if(height == null) {
 		height = 0;
@@ -10433,7 +10426,7 @@ flixel_group_FlxTypedSpriteGroup.prototype = $extend(flixel_FlxSprite.prototype,
 			}
 		}
 	}
-	,transformChildren_flixel_math_FlxPoint: function(Function1,Value) {
+	,transformChildren_Float: function(Function1,Value) {
 		if(this._skipTransformChildren || this.group == null) {
 			return;
 		}
@@ -10447,7 +10440,7 @@ flixel_group_FlxTypedSpriteGroup.prototype = $extend(flixel_FlxSprite.prototype,
 			}
 		}
 	}
-	,transformChildren_Float: function(Function1,Value) {
+	,transformChildren_flixel_math_FlxPoint: function(Function1,Value) {
 		if(this._skipTransformChildren || this.group == null) {
 			return;
 		}
@@ -11303,39 +11296,30 @@ flixel_group_FlxTypedSpriteGroup.prototype = $extend(flixel_FlxSprite.prototype,
 	,__class__: flixel_group_FlxTypedSpriteGroup
 	,__properties__: $extend(flixel_FlxSprite.prototype.__properties__,{get__sprites:"get__sprites",set_maxSize:"set_maxSize",get_maxSize:"get_maxSize",get_length:"get_length",get_members:"get_members",set_group:"set_group"})
 });
-var editor_EditorGrid = function(x,y,maxSize) {
-	this.cells = [];
+var editor_EditorGrid = function() {
 	this.currentBar = 0;
 	this.subBeat = 0.25;
-	this.notes = new haxe_ds_StringMap();
-	flixel_group_FlxTypedSpriteGroup.call(this,x,y,maxSize);
+	flixel_group_FlxTypedSpriteGroup.call(this);
 };
 $hxClasses["editor.EditorGrid"] = editor_EditorGrid;
 editor_EditorGrid.__name__ = "editor.EditorGrid";
 editor_EditorGrid.__super__ = flixel_group_FlxTypedSpriteGroup;
 editor_EditorGrid.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototype,{
 	totalBars: null
-	,notes: null
 	,subBeat: null
 	,currentBar: null
 	,beatsPerMeasure: null
 	,lines: null
 	,columnsPerBar: null
-	,cells: null
-	,init: function(beatsPerMeasure,totalBars,lines,subBeat) {
+	,noteLayer: null
+	,load: function(beatsPerMeasure,totalBars,lines,subBeat) {
 		this.beatsPerMeasure = beatsPerMeasure;
 		this.totalBars = totalBars;
 		this.lines = lines;
 		this.subBeat = subBeat;
 		this.columnsPerBar = beatsPerMeasure / subBeat | 0;
-		var _g = 0;
-		while(_g < lines.length) {
-			var l = lines[_g];
-			++_g;
-			this.notes.h[l] = [];
-		}
 		var colW = 1100 / this.columnsPerBar;
-		var beatCols = 1 / subBeat | 0;
+		var stepsPerBeat = 1 / subBeat | 0;
 		var _g = 0;
 		var _g1 = this.columnsPerBar;
 		while(_g < _g1) {
@@ -11353,86 +11337,41 @@ editor_EditorGrid.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototype
 			var icon = new flixel_FlxSprite(60,y + 5.).makeGraphic(40,40,-8355712,true);
 			flixel_util_FlxSpriteUtil.drawRect(icon,4,4,32,32,-1513240);
 			this.add(icon);
-			var row = new flixel_FlxSprite(130,y).makeGraphic(1100,50,-8355712,true);
-			flixel_util_FlxSpriteUtil.drawRect(row,2,2,1096,46,-1);
-			var _g2 = 1;
+			var _g2 = 0;
 			var _g3 = this.columnsPerBar;
 			while(_g2 < _g3) {
 				var c = _g2++;
-				if(c % beatCols == 0) {
-					flixel_util_FlxSpriteUtil.drawRect(row,c * colW - 1,0,2,50,-12566464);
-				} else {
-					flixel_util_FlxSpriteUtil.drawRect(row,c * colW,2,1,46,-5592406);
-				}
+				var cell = new editor_Grid(130 + c * colW,y,this.columnsPerBar,r,c,(c + 1) % stepsPerBeat == 0,c == 0);
+				flixel_input_mouse_FlxMouseEvent.globalManager.add(cell,null,$bind(this,this.gridOnClick),null,null,false,true,true,null);
+				this.add(cell);
 			}
-			flixel_util_FlxSpriteUtil.drawRect(row,0,0,4,50,-16777216);
-			this.add(row);
-			var rowCells = [];
-			var _g4 = 0;
-			var _g5 = this.columnsPerBar;
-			while(_g4 < _g5) {
-				var c1 = _g4++;
-				var note = new flixel_FlxSprite(130 + c1 * colW + 2,y + 2).makeGraphic((colW | 0) - 4,46,-65536);
-				note.set_visible(false);
-				this.add(note);
-				rowCells.push(note);
-			}
-			this.cells.push(rowCells);
 		}
 	}
 	,update: function(elapsed) {
 		flixel_group_FlxTypedSpriteGroup.prototype.update.call(this,elapsed);
-		if(flixel_FlxG.mouse._leftButton.current != 2) {
-			return;
-		}
-		var mx = flixel_FlxG.mouse.x;
-		var my = flixel_FlxG.mouse.y;
-		if(mx < 130 || mx >= 1230 || my < 400 || my >= 400 + this.lines.length * 70) {
-			return;
-		}
-		var row = (my - 400) / 70 | 0;
-		if(my - 400 - row * 70 >= 50) {
-			return;
-		}
-		var col = (mx - 130) / (1100 / this.columnsPerBar) | 0;
+	}
+	,gridOnClick: function(cell) {
+		var row = cell.row;
+		var col = cell.col;
+		var height = 0.8;
 		var absoluteTime = this.currentBar * this.beatsPerMeasure + col * this.subBeat;
-		var list = this.notes.h[this.lines[row]];
-		var existing = Lambda.find(list,function(t) {
-			return Math.abs(t - absoluteTime) < 0.01;
-		});
-		if(existing != null) {
-			HxOverrides.remove(list,existing);
-		} else {
-			list.push(absoluteTime);
+		if(this.noteLayer != null) {
+			var note = this.noteLayer.group.recycle(null,function() {
+				return new editor_NoteEntity();
+			},false,true);
+			note.line = this.lines[row];
+			note.absBeat = absoluteTime;
+			note.makeGraphic(34,50 * height | 0,-65536);
+			note.set_x(130 + (col + 0.1) * (1100 / this.columnsPerBar));
+			note.set_y(400 + (row + (1 - height) / 2) * 70);
+			this.noteLayer.add(note);
 		}
-		this.cells[row][col].set_visible(existing == null);
 	}
 	,set_currentBar: function(value) {
 		var Max = this.totalBars - 1;
 		var lowerBound = value < 0 ? 0 : value;
 		this.currentBar = (Max != null && lowerBound > Max ? Max : lowerBound) | 0;
-		var _g = 0;
-		var _g1 = this.lines.length;
-		while(_g < _g1) {
-			var r = _g++;
-			var _g2 = 0;
-			var _g3 = this.cells[r];
-			while(_g2 < _g3.length) {
-				var cell = _g3[_g2];
-				++_g2;
-				cell.set_visible(false);
-			}
-			var _g4 = 0;
-			var _g5 = this.notes.h[this.lines[r]];
-			while(_g4 < _g5.length) {
-				var t = _g5[_g4];
-				++_g4;
-				var col = Math.round((t - this.currentBar * this.beatsPerMeasure) / this.subBeat);
-				if(col >= 0 && col < this.columnsPerBar) {
-					this.cells[r][col].set_visible(true);
-				}
-			}
-		}
+		this.noteLayer.set_currentBar(this.currentBar);
 		return this.currentBar;
 	}
 	,__class__: editor_EditorGrid
@@ -11468,11 +11407,6 @@ editor_EditorNavigation.prototype = $extend(flixel_group_FlxTypedSpriteGroup.pro
 	,__class__: editor_EditorNavigation
 });
 var editor_EditorPanel = function() {
-	this.onLoad = new flixel_util__$FlxSignal_FlxSignal0();
-	this.onSave = new flixel_util__$FlxSignal_FlxSignal0();
-	this.onChangeDiff = new flixel_util__$FlxSignal_FlxSignal1();
-	this.onChangeScroll = new flixel_util__$FlxSignal_FlxSignal1();
-	this.onChangeBpm = new flixel_util__$FlxSignal_FlxSignal1();
 	flixel_group_FlxTypedSpriteGroup.call(this);
 	var panel = new flixel_FlxSprite(90,40).makeGraphic(900,230,-3722,true);
 	flixel_util_FlxSpriteUtil.drawRect(panel,4,4,892,222,-14671840);
@@ -11502,12 +11436,7 @@ $hxClasses["editor.EditorPanel"] = editor_EditorPanel;
 editor_EditorPanel.__name__ = "editor.EditorPanel";
 editor_EditorPanel.__super__ = flixel_group_FlxTypedSpriteGroup;
 editor_EditorPanel.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototype,{
-	onChangeBpm: null
-	,onChangeScroll: null
-	,onChangeDiff: null
-	,onSave: null
-	,onLoad: null
-	,bpm: null
+	bpm: null
 	,scrollSpeed: null
 	,diffIndex: null
 	,infoText: null
@@ -11545,10 +11474,8 @@ editor_EditorPanel.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototyp
 			this.set_diffIndex(this.diffIndex - 1);
 		} else if(flixel_FlxG.mouse.overlaps(this.diffUp)) {
 			this.set_diffIndex(this.diffIndex + 1);
-		} else if(flixel_FlxG.mouse.overlaps(this.saveBtn)) {
-			this.onSave.dispatch();
-		} else if(flixel_FlxG.mouse.overlaps(this.loadBtn)) {
-			this.onLoad.dispatch();
+		} else if(!flixel_FlxG.mouse.overlaps(this.saveBtn)) {
+			var tmp = flixel_FlxG.mouse.overlaps(this.loadBtn);
 		}
 	}
 	,updateInfo: function(bar,totalBars,beatsPerMeasure) {
@@ -11557,19 +11484,16 @@ editor_EditorPanel.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototyp
 	,set_bpm: function(value) {
 		this.bpm = Math.max(1,value);
 		this.bpmText.set_text(Std.string(this.bpm));
-		this.onChangeBpm.dispatch(this.bpm);
 		return this.bpm;
 	}
 	,set_scrollSpeed: function(value) {
 		this.scrollSpeed = Math.max(0.1,Math.round(value * 10) / 10);
 		this.scrollText.set_text(Std.string(this.scrollSpeed));
-		this.onChangeScroll.dispatch(this.scrollSpeed);
 		return this.scrollSpeed;
 	}
 	,set_diffIndex: function(value) {
 		this.diffIndex = (value + editor_EditorPanel.difficulties.length) % editor_EditorPanel.difficulties.length;
 		this.diffText.set_text(editor_EditorPanel.difficulties[this.diffIndex].toUpperCase());
-		this.onChangeDiff.dispatch(editor_EditorPanel.difficulties[this.diffIndex]);
 		return this.diffIndex;
 	}
 	,label: function(x,y,w,text) {
@@ -11580,6 +11504,81 @@ editor_EditorPanel.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototyp
 	}
 	,__class__: editor_EditorPanel
 	,__properties__: $extend(flixel_group_FlxTypedSpriteGroup.prototype.__properties__,{set_diffIndex:"set_diffIndex",set_scrollSpeed:"set_scrollSpeed",set_bpm:"set_bpm"})
+});
+var editor_Grid = function(x,y,columnsPerBar,row,col,isBeatBoundary,isFirst) {
+	flixel_FlxSprite.call(this,x,y);
+	this.row = row;
+	this.col = col;
+	var w = Math.ceil(1100 / columnsPerBar - 4);
+	var h = 50;
+	this.makeGraphic(w,h,-8355712,true);
+	flixel_util_FlxSpriteUtil.drawRect(this,1,1,w,h,-1);
+	if(isBeatBoundary) {
+		flixel_util_FlxSpriteUtil.drawRect(this,w,0,2,h,-11842741);
+	} else {
+		flixel_util_FlxSpriteUtil.drawRect(this,w,2,2,h,-15006712);
+	}
+	if(isFirst) {
+		flixel_util_FlxSpriteUtil.drawRect(this,0,0,4,h,-16777216);
+	}
+};
+$hxClasses["editor.Grid"] = editor_Grid;
+editor_Grid.__name__ = "editor.Grid";
+editor_Grid.__super__ = flixel_FlxSprite;
+editor_Grid.prototype = $extend(flixel_FlxSprite.prototype,{
+	row: null
+	,col: null
+	,__class__: editor_Grid
+});
+var editor_NoteEntity = function() {
+	this.offsetMs = 0;
+	flixel_FlxSprite.call(this);
+};
+$hxClasses["editor.NoteEntity"] = editor_NoteEntity;
+editor_NoteEntity.__name__ = "editor.NoteEntity";
+editor_NoteEntity.__super__ = flixel_FlxSprite;
+editor_NoteEntity.prototype = $extend(flixel_FlxSprite.prototype,{
+	line: null
+	,absBeat: null
+	,offsetMs: null
+	,getBar: function(beatsPerMeasure) {
+		return this.absBeat / beatsPerMeasure | 0;
+	}
+	,getStepBeat: function(beatsPerMeasure) {
+		return this.absBeat - this.getBar(beatsPerMeasure) * beatsPerMeasure;
+	}
+	,__class__: editor_NoteEntity
+});
+var editor_NoteLayer = function() {
+	this.lastHovered = null;
+	this.currentBar = 0;
+	flixel_group_FlxTypedSpriteGroup.call(this);
+};
+$hxClasses["editor.NoteLayer"] = editor_NoteLayer;
+editor_NoteLayer.__name__ = "editor.NoteLayer";
+editor_NoteLayer.__super__ = flixel_group_FlxTypedSpriteGroup;
+editor_NoteLayer.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototype,{
+	currentBar: null
+	,lastHovered: null
+	,update: function(elapsed) {
+		flixel_group_FlxTypedSpriteGroup.prototype.update.call(this,elapsed);
+	}
+	,add: function(note) {
+		flixel_input_mouse_FlxMouseEvent.globalManager.add(note,$bind(this,this.toggle),null,$bind(this,this.onNoteHover),$bind(this,this.onNoteOut),false,true,true,null);
+		return flixel_group_FlxTypedSpriteGroup.prototype.add.call(this,note);
+	}
+	,toggle: function(note) {
+	}
+	,onNoteHover: function(note) {
+	}
+	,onNoteOut: function(note) {
+	}
+	,set_currentBar: function(value) {
+		this.currentBar = value;
+		return this.currentBar;
+	}
+	,__class__: editor_NoteLayer
+	,__properties__: $extend(flixel_group_FlxTypedSpriteGroup.prototype.__properties__,{set_currentBar:"set_currentBar"})
 });
 var flixel_IFlxBasic = function() { };
 $hxClasses["flixel.IFlxBasic"] = flixel_IFlxBasic;
@@ -87970,7 +87969,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 123112;
+	this.version = 180456;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = "lime.utils.AssetCache";
@@ -139345,6 +139344,7 @@ state_EditorState.prototype = $extend(flixel_FlxState.prototype,{
 	,panel: null
 	,grid: null
 	,nav: null
+	,layer: null
 	,create: function() {
 		flixel_FlxState.prototype.create.call(this);
 		flixel_FlxG.camera.bgColor = -1513240;
@@ -139352,29 +139352,17 @@ state_EditorState.prototype = $extend(flixel_FlxState.prototype,{
 		this.beatsPerMeasure = this.songData.timeSignature.beatsPerMeasure;
 		this.totalBars = Math.ceil(this.songData.duration / (60 / this.bpm * this.beatsPerMeasure));
 		this.grid = new editor_EditorGrid();
-		this.grid.init(this.beatsPerMeasure,this.totalBars,this.lines,0.25);
+		this.grid.load(this.beatsPerMeasure,this.totalBars,this.lines,0.25);
 		this.add(this.grid);
 		this.panel = new editor_EditorPanel();
 		this.panel.init(this.bpm,1.0,this.difficulty);
-		this.panel.onChangeBpm.add(function(newBpm) {
-			haxe_Log.trace("New BPM: " + newBpm,{ fileName : "source/state/EditorState.hx", lineNumber : 47, className : "state.EditorState", methodName : "create"});
-		});
-		this.panel.onChangeScroll.add(function(newScroll) {
-			haxe_Log.trace("New Scroll: " + newScroll,{ fileName : "source/state/EditorState.hx", lineNumber : 48, className : "state.EditorState", methodName : "create"});
-		});
-		this.panel.onChangeDiff.add(function(newDiff) {
-			haxe_Log.trace("New Diff: " + newDiff,{ fileName : "source/state/EditorState.hx", lineNumber : 49, className : "state.EditorState", methodName : "create"});
-		});
-		this.panel.onSave.add(function() {
-			haxe_Log.trace("SAVE clicked",{ fileName : "source/state/EditorState.hx", lineNumber : 50, className : "state.EditorState", methodName : "create"});
-		});
-		this.panel.onLoad.add(function() {
-			haxe_Log.trace("LOAD clicked",{ fileName : "source/state/EditorState.hx", lineNumber : 51, className : "state.EditorState", methodName : "create"});
-		});
 		this.add(this.panel);
 		this.nav = new editor_EditorNavigation();
 		this.nav.onNavigate.add($bind(this,this.navigate));
 		this.add(this.nav);
+		this.layer = new editor_NoteLayer();
+		this.add(this.layer);
+		this.grid.noteLayer = this.layer;
 		this.panel.updateInfo(this.grid.currentBar,this.totalBars,this.beatsPerMeasure);
 	}
 	,update: function(elapsed) {
@@ -139777,6 +139765,15 @@ Xml.Comment = 3;
 Xml.DocType = 4;
 Xml.ProcessingInstruction = 5;
 Xml.Document = 6;
+editor_EditorConstants.ROW_Y = 400;
+editor_EditorConstants.ROW_H = 50;
+editor_EditorConstants.ROW_PITCH = 70;
+editor_EditorConstants.SPRITE_X = 60;
+editor_EditorConstants.SPRITE_SIZE = 40;
+editor_EditorConstants.GRID_X = 130;
+editor_EditorConstants.GRID_W = 1100;
+editor_EditorConstants.GRID_GAP = 4;
+editor_EditorConstants.EPSILON = 0.01;
 flixel_FlxObject.defaultPixelPerfectPosition = false;
 flixel_FlxObject.SEPARATE_BIAS = 4;
 flixel_FlxObject.defaultMoves = true;
@@ -139790,14 +139787,6 @@ openfl_geom_Matrix.__pool = new lime_utils_ObjectPool(function() {
 openfl_geom_Matrix.__matrix3 = lime_math_Matrix3._new();
 flixel_FlxSprite.defaultAntialiasing = false;
 flixel_FlxSprite.drawComplexMatrix = new flixel_math_FlxMatrix();
-editor_EditorGrid.ROW_Y = 400;
-editor_EditorGrid.ROW_H = 50;
-editor_EditorGrid.ROW_PITCH = 70;
-editor_EditorGrid.SPRITE_X = 60;
-editor_EditorGrid.SPRITE_SIZE = 40;
-editor_EditorGrid.GRID_X = 130;
-editor_EditorGrid.GRID_W = 1100;
-editor_EditorGrid.EPSILON = 0.01;
 editor_EditorPanel.PANEL_X = 90;
 editor_EditorPanel.PANEL_Y = 40;
 editor_EditorPanel.PANEL_W = 900;

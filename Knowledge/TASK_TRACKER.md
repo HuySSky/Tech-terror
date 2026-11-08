@@ -15,7 +15,10 @@
 - [x] **M4.2 — Editor Interaction:** Mouse click toggle notes.
 
 ## Next (Unblocked - Exact Order)
-- [ ] **M4.3 — Editor Settings:** UI for `scrollSpeed`, `bpm`, #lines.
+- [ ] **M4.3b — NoteLayer:** Create class. Implement `toggle`, `refreshVisuals`, `clearLine`, `bind(grid)`.
+- [ ] **M4.3c — EditorGrid Rewrite:** Remove `notes` Map, `cells`, `update()` click. Add getters, `rebuild()`, `cellAt()`.
+- [ ] **M4.3d — EditorState Wiring:** Wire signals, route click to `noteLayer.toggle()`, call `refreshVisuals()`.
+- [ ] **M4.3e — EditorPanel UI:** Add Sub-beat control, Hover Info Box, `isOver()` check.
 - [ ] **M5.1 — Editor Save:** Auto-save `chart_[difficulty].json` on `Esc`. Assign `BeatStrength` via `TimeSignature`.
 - [ ] **M5.2 — Editor Load:** Read existing `chart_[difficulty].json`.
 - [ ] **M6.1 — Play: Chart Loading:** Load `chart_[difficulty].json`, init notes.
@@ -31,4 +34,5 @@
 - [ ] **M10 — Pause State:** Sub-state overlay, `Esc`/`Enter` triggers, Resume/Restart/Quit.
 
 ## Blocked
+- **M5.1 (Partially):** U-037 (Cho phép đổi `beatsPerMeasure` runtime? Đề xuất B: Không cho đổi, chỉ load. Sẽ chốt ở M5.1).
 - **M9.1/M9.2:** Blocked by U-034 (Missing Tight/Loose/Off weights for Accuracy). Need Owner decision to finalize `SongResult` math.

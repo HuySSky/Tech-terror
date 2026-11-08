@@ -20,6 +20,7 @@ class EditorState extends FlxState
 	var panel:EditorPanel;
 	var grid:EditorGrid;
 	var nav:EditorNavigation;
+	var layer:NoteLayer;
 
 	public function new(songData:SongData, difficulty:String)
 	{
@@ -50,6 +51,10 @@ class EditorState extends FlxState
 		nav.onNavigate.add(navigate);
 		add(nav);
 
+		layer = new NoteLayer();
+		add(layer);
+		
+		grid.noteLayer = layer;
 		panel.updateInfo(grid.currentBar, totalBars, beatsPerMeasure);
 	}
 

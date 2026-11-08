@@ -105,10 +105,11 @@
 - **`Line` / `LineSprite` / `NoteGenerator` / `Note`:** `Note(sprite, hitTime, strength)`.
 
 - **Editor Objects (Modular):**
-  - **`EditorState`**: Orchestrator. Holds `songData`, `bpm`, `beatsPerMeasure`. Instantiates and links UI components.
-  - **`EditorPanel`**: Top UI panel. `updateInfo(bar, totalBars, bpm, beats)`.
-  - **`EditorGrid`**: Extends `FlxTypedSpriteGroup`. Draws rows, columns, beat lines. Holds `currentBar`. `changeBar(dir)` calls `rebuild()`.
-  - **`EditorNavigation`**: Extends `FlxTypedSpriteGroup`. Renders `<` and `>`. Uses `onNavigate:Int->Void` callback on mouse click.
+  - **`EditorState`**: Orchestrator. Handles input, routes signals between Panel, Grid, and NoteLayer.
+  - **`EditorPanel`**: Top UI panel. Emits signals (`onChangeBpm`, `onChangeSubBeat`, `onChangeLines`, etc.). Shows hover info (Bar, Beat, Offset).
+  - **`EditorGrid`**: Geometry only. `rebuild()` draws columns/rows based on params. `cellAt(mx,my)` maps mouse to `{row, col}`. `getNoteWidth()` returns fixed width (`GRID_W / (beatsPerMeasure * 8)`).
+  - **`NoteLayer`**: Holds `Array<NoteEntity>`. `toggle()` adds/removes. `refreshVisuals()` is the SOLE function that sets `x`, `y`, `visible` of notes.
+  - **`NoteEntity`**: `line:String`, `absBeat:Float`, `offsetMs:Float`. (Derived methods `getBar()`, `getStepBeat()` query the Grid).
 
 ## 5. UI Layouts & Controls
 
@@ -128,12 +129,15 @@
 
 **Editor Layout:**
 - DAW grid. Rows=`Line`, Cols=beat/sub-beat slots (`subBeat` default 0.25 → 16 cols/bar for 4/4).
-- **Grid Math:** `columnsPerBar = beatsPerMeasure / subBeat`.
+- **Grid Math & Layout:**
+  - `subBeat` can toggle between `1/4` (16 cols) and `1/8` (32 cols).
+  - **Note Width:** Fixed at `GRID_W / (beatsPerMeasure * 8)` (equivalent to 1/8 beat) regardless of current `subBeat`.
+  - **Off-grid rendering:** If a note is created at 1/8 but the grid is changed to 1/4, the note remains at its exact pixel derived from `absBeat`, visually falling between columns. Data is preserved.
 - **BeatStrength:** `b = floor(t mod beatsPerMeasure)`. `b ∈ strongBeats`→1.2; `b ∈ mediumBeats`→1.1; else 1.0.
 - **Editor Controls:**
   - `Left`/`Right` (kb) or mouse click on `<` `>` arrows: prev/next bar.
-  - Mouse click (grid): toggle note (M4.2).
-  - `Esc`: Auto-save JSON, exit.
+  - Mouse click (grid): toggle note.
+  - `Esc`: Auto-save JSON, exit (Windows only).
 - **Settings:** Can adjust scrollSpeed, bpm, #lines (writes to `_data.json` + chart). `subBeat` is Editor-only.
 
 ## 6. Unresolved (DO NOT GUESS — Stop and Ask)

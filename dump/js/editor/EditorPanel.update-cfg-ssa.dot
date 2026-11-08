@@ -1,94 +1,94 @@
 digraph graphname {
 	node [shape=plaintext];
-n91921[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91921) BKConditional</td></tr>
+n39803[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39803) BKConditional</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91920[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91920) BKConditional</td></tr>
+n39802[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39802) BKConditional</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91919[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91919) BKConditional</td></tr>
+n39801[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39801) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = flixel.FlxG.mouse.overlaps(this.saveBtn)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91918[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91918) BKConditional</td></tr>
+n39800[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39800) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = this.diffIndex + 1</td></tr>
 	<tr><td port="e1" align="left">this.set_diffIndex(tmp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91917[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91917) BKConditional</td></tr>
+n39799[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39799) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = flixel.FlxG.mouse.overlaps(this.diffUp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91916[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91916) BKConditional</td></tr>
+n39798[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39798) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = this.diffIndex - 1</td></tr>
 	<tr><td port="e1" align="left">this.set_diffIndex(tmp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91915[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91915) BKConditional</td></tr>
+n39797[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39797) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = flixel.FlxG.mouse.overlaps(this.diffDown)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91914[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91914) BKConditional</td></tr>
+n39796[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39796) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = this.scrollSpeed + 0.1</td></tr>
 	<tr><td port="e1" align="left">this.set_scrollSpeed(tmp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91913[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91913) BKConditional</td></tr>
+n39795[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39795) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = flixel.FlxG.mouse.overlaps(this.scrollUp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91912[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91912) BKConditional</td></tr>
+n39794[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39794) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = this.scrollSpeed - 0.1</td></tr>
 	<tr><td port="e1" align="left">this.set_scrollSpeed(tmp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91911[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91911) BKConditional</td></tr>
+n39793[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39793) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = flixel.FlxG.mouse.overlaps(this.scrollDown)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91910[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91910) BKConditional</td></tr>
+n39792[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39792) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = this.bpm + 1</td></tr>
 	<tr><td port="e1" align="left">this.set_bpm(tmp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91909[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91909) BKConditional</td></tr>
+n39791[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39791) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = flixel.FlxG.mouse.overlaps(this.bpmUp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91908[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91908) BKConditional</td></tr>
+n39790[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39790) BKConditional</td></tr>
 	<tr><td port="e0" align="left">var tmp = this.bpm - 1</td></tr>
 	<tr><td port="e1" align="left">this.set_bpm(tmp)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91907[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91907) BKNormal</td></tr>
+n39789[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39789) BKNormal</td></tr>
 	<tr><td port="e0" align="left">var tmp = flixel.FlxG.mouse.overlaps(this.bpmDown)</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91906[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91906) BKConditional</td></tr>
+n39788[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39788) BKConditional</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91905[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91905) BKFunctionEnd</td></tr>
+n39787[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39787) BKFunctionEnd</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n91904[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
-	<tr><td port="in" bgcolor="lightgray">(91904) BKFunctionBegin</td></tr>
+n39786[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+	<tr><td port="in" bgcolor="lightgray">(39786) BKFunctionBegin</td></tr>
 	<tr><td port="e0" align="left">super.update(elapsed)</td></tr>
 	<tr><td port="e1" align="left">var tmp = flixel.FlxG.mouse._leftButton.current != cast 2</td></tr>
 	<tr><td port="out"></td></tr>
@@ -97,5 +97,5 @@ n1[label=<<table BORDER="0" CELLBORDER="1" CELLSPACING="0">
 	<tr><td port="in" bgcolor="lightgray">(1) BKRoot</td></tr>
 	<tr><td port="out"></td></tr>
 </table>>];
-n1:out -> n91904:in[label="CFGFunction"];
+n1:out -> n39786:in[label="CFGFunction"];
 }

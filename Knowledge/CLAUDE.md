@@ -21,6 +21,7 @@ Before implementing:
 - Do not stack assumptions and hope they're right.
 
 This does not contradict Zero-Fluff: thinking happens before the response; the response itself still contains only code + Handoff.
+Trivial fix exception: When a U-issue has exactly one obvious fix (e.g., rename forced by compiler, missing import, off-by-one in spec-mandated formula), apply the fix inline, note it in Handoff Summary, do NOT create a U-issue. U-issue is for ambiguous decisions, not mechanical ones.
 
 ## 3. Simplicity First
 
