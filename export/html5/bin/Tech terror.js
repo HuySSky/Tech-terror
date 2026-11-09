@@ -940,7 +940,7 @@ ApplicationMain.main = function() {
 ApplicationMain.create = function(config) {
 	var app = new openfl_display_Application();
 	ManifestResources.init(config);
-	app.meta.h["build"] = "20";
+	app.meta.h["build"] = "21";
 	app.meta.h["company"] = "HaxeFlixel";
 	app.meta.h["file"] = "Tech terror";
 	app.meta.h["name"] = "Tech terror";
@@ -11313,7 +11313,7 @@ editor_EditorGrid.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototype
 	,columnsPerBar: null
 	,noteLayer: null
 	,load: function(beatsPerMeasure,totalBars,lines,subBeat) {
-		this.beatsPerMeasure = beatsPerMeasure;
+		this.set_beatsPerMeasure(beatsPerMeasure);
 		this.totalBars = totalBars;
 		this.lines = lines;
 		this.subBeat = subBeat;
@@ -11361,7 +11361,7 @@ editor_EditorGrid.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototype
 			},false,true);
 			note.line = this.lines[row];
 			note.absBeat = absoluteTime;
-			note.makeGraphic(34,50 * height | 0,-65536);
+			note.makeGraphic(Math.round(34.375),Math.round(50 * height),-65536);
 			note.set_x(130 + (col + 0.1) * (1100 / this.columnsPerBar));
 			note.set_y(400 + (row + (1 - height) / 2) * 70);
 			this.noteLayer.add(note);
@@ -11371,11 +11371,26 @@ editor_EditorGrid.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototype
 		var Max = this.totalBars - 1;
 		var lowerBound = value < 0 ? 0 : value;
 		this.currentBar = (Max != null && lowerBound > Max ? Max : lowerBound) | 0;
-		this.noteLayer.set_currentBar(this.currentBar);
+		if(this.noteLayer != null) {
+			this.noteLayer.set_currentBar(this.currentBar);
+		}
 		return this.currentBar;
 	}
+	,set_beatsPerMeasure: function(value) {
+		this.beatsPerMeasure = value;
+		if(this.noteLayer != null) {
+			this.noteLayer.beatsPerMeasure = this.beatsPerMeasure;
+		}
+		return this.beatsPerMeasure;
+	}
+	,set_noteLayer: function(value) {
+		this.noteLayer = value;
+		this.noteLayer.beatsPerMeasure = this.beatsPerMeasure;
+		this.noteLayer.set_currentBar(this.currentBar);
+		return this.noteLayer;
+	}
 	,__class__: editor_EditorGrid
-	,__properties__: $extend(flixel_group_FlxTypedSpriteGroup.prototype.__properties__,{set_currentBar:"set_currentBar"})
+	,__properties__: $extend(flixel_group_FlxTypedSpriteGroup.prototype.__properties__,{set_noteLayer:"set_noteLayer",set_beatsPerMeasure:"set_beatsPerMeasure",set_currentBar:"set_currentBar"})
 });
 var editor_EditorNavigation = function() {
 	this.onNavigate = new flixel_util__$FlxSignal_FlxSignal1();
@@ -11509,14 +11524,14 @@ var editor_Grid = function(x,y,columnsPerBar,row,col,isBeatBoundary,isFirst) {
 	flixel_FlxSprite.call(this,x,y);
 	this.row = row;
 	this.col = col;
-	var w = Math.ceil(1100 / columnsPerBar - 4);
+	var w = Math.round(1100 / columnsPerBar - 4);
 	var h = 50;
 	this.makeGraphic(w,h,-8355712,true);
-	flixel_util_FlxSpriteUtil.drawRect(this,1,1,w,h,-1);
+	flixel_util_FlxSpriteUtil.drawRect(this,0,0,w,h,-1);
 	if(isBeatBoundary) {
-		flixel_util_FlxSpriteUtil.drawRect(this,w,0,2,h,-11842741);
+		flixel_util_FlxSpriteUtil.drawRect(this,w,0,4,h,-11842741);
 	} else {
-		flixel_util_FlxSpriteUtil.drawRect(this,w,2,2,h,-15006712);
+		flixel_util_FlxSpriteUtil.drawRect(this,w,0,4,h,-15006712);
 	}
 	if(isFirst) {
 		flixel_util_FlxSpriteUtil.drawRect(this,0,0,4,h,-16777216);
@@ -11551,6 +11566,7 @@ editor_NoteEntity.prototype = $extend(flixel_FlxSprite.prototype,{
 });
 var editor_NoteLayer = function() {
 	this.lastHovered = null;
+	this.beatsPerMeasure = 4;
 	this.currentBar = 0;
 	flixel_group_FlxTypedSpriteGroup.call(this);
 };
@@ -11559,22 +11575,34 @@ editor_NoteLayer.__name__ = "editor.NoteLayer";
 editor_NoteLayer.__super__ = flixel_group_FlxTypedSpriteGroup;
 editor_NoteLayer.prototype = $extend(flixel_group_FlxTypedSpriteGroup.prototype,{
 	currentBar: null
+	,beatsPerMeasure: null
 	,lastHovered: null
 	,update: function(elapsed) {
 		flixel_group_FlxTypedSpriteGroup.prototype.update.call(this,elapsed);
 	}
 	,add: function(note) {
-		flixel_input_mouse_FlxMouseEvent.globalManager.add(note,$bind(this,this.toggle),null,$bind(this,this.onNoteHover),$bind(this,this.onNoteOut),false,true,true,null);
+		flixel_input_mouse_FlxMouseEvent.globalManager.add(note,null,$bind(this,this.toggle),$bind(this,this.onNoteHover),$bind(this,this.onNoteOut),false,true,true,null);
 		return flixel_group_FlxTypedSpriteGroup.prototype.add.call(this,note);
 	}
 	,toggle: function(note) {
+		note.kill();
 	}
 	,onNoteHover: function(note) {
 	}
 	,onNoteOut: function(note) {
 	}
+	,refreshVisuals: function() {
+		var _g = 0;
+		var _g1 = this.group.members;
+		while(_g < _g1.length) {
+			var note = _g1[_g];
+			++_g;
+			note.set_visible(note.getBar(this.beatsPerMeasure) == this.currentBar);
+		}
+	}
 	,set_currentBar: function(value) {
 		this.currentBar = value;
+		this.refreshVisuals();
 		return this.currentBar;
 	}
 	,__class__: editor_NoteLayer
@@ -87969,7 +87997,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 180456;
+	this.version = 568015;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = "lime.utils.AssetCache";
@@ -139362,7 +139390,7 @@ state_EditorState.prototype = $extend(flixel_FlxState.prototype,{
 		this.add(this.nav);
 		this.layer = new editor_NoteLayer();
 		this.add(this.layer);
-		this.grid.noteLayer = this.layer;
+		this.grid.set_noteLayer(this.layer);
 		this.panel.updateInfo(this.grid.currentBar,this.totalBars,this.beatsPerMeasure);
 	}
 	,update: function(elapsed) {

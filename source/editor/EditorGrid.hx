@@ -16,10 +16,10 @@ class EditorGrid extends FlxTypedSpriteGroup<FlxSprite>
 	public var subBeat:Float = 0.25;
 	public var currentBar(default, set):Int = 0;
 
-	var beatsPerMeasure:Int;
+	public var beatsPerMeasure(default, set):Int;
 	var lines:Array<String>;
 	var columnsPerBar:Int;
-	public var noteLayer:NoteLayer;
+	public var noteLayer(default, set):NoteLayer;
 
 	public function new()
 	{
@@ -73,7 +73,7 @@ class EditorGrid extends FlxTypedSpriteGroup<FlxSprite>
 		var col = cell.col;
 		var height = 0.8;
 
-		var absoluteTime = (currentBar * beatsPerMeasure) + (col * subBeat);
+		var absoluteTime = currentBar * beatsPerMeasure + col * subBeat;
 		if (noteLayer != null)
 		{
 			var note = noteLayer.recycle(NoteEntity.new);
@@ -91,7 +91,23 @@ class EditorGrid extends FlxTypedSpriteGroup<FlxSprite>
 	function set_currentBar(value:Int):Int
 	{
 		currentBar = Std.int(FlxMath.bound(value, 0, totalBars - 1));
-		noteLayer.currentBar = currentBar;
+		if (noteLayer != null)
+			noteLayer.currentBar = currentBar;
 		return currentBar;
+	}
+	function set_beatsPerMeasure(value:Int):Int
+	{
+		beatsPerMeasure = value;
+		if (noteLayer != null)
+			noteLayer.beatsPerMeasure = beatsPerMeasure;
+		return beatsPerMeasure;
+	}
+
+	function set_noteLayer(value:NoteLayer):NoteLayer
+	{
+		noteLayer = value;
+		noteLayer.beatsPerMeasure = beatsPerMeasure;
+		noteLayer.currentBar = currentBar;
+		return noteLayer;
 	}
 }

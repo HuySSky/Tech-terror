@@ -36,21 +36,21 @@
 4. Info Panel reads `SongResult.loadData()` for High Score display.
 
 **Editor Flow:**
-- **Architecture (3-Tier):** `EditorState` acts as orchestrator. UI is split by lifecycle:
-  - `EditorPanel` (Top UI): Holds BPM, ScrollSpeed, Difficulty, Sub-beat. Emits signals on change. Does NOT hold note data.
-  - `EditorGrid` (Layout): Draws rows, cols, separators, icons. Holds `currentBar`, `totalBars`, `beatsPerMeasure`, `subBeat`. Does NOT know notes exist.
-  - `NoteLayer` (Data + Render): Holds `Array<NoteEntity>`. Renders notes onto the grid. Does NOT draw geometry.
-- **Data Flow & Interaction:**
-  - **Click Grid:** `EditorState` catches click → `grid.cellAt()` → `noteLayer.toggle()`. (Toggles note at `currentBar`, `line`, `col`).
-  - **Change Sub-beat:** Panel emits signal → `EditorState` calls `grid.rebuild()` (redraws columns) → `noteLayer.refreshVisuals()`. Notes DO NOT move (pixel position derived from absolute beat).
-  - **Change BeatsPerMeasure:** Panel emits signal → `grid.rebuild()` → `noteLayer.refreshVisuals()`. Note bar/step calculations update, but `absBeat` is immutable.
-  - **Change Lines (Add/Remove):** Panel emits signal → `grid.rebuild()` + `noteLayer.clearLine()` for removed lines → `refreshVisuals()`.
-  - **Navigate Bars:** `grid.currentBar` setter clamps → `noteLayer.refreshVisuals()` (hides/shows notes outside current bar).
-- **Note Properties (`NoteEntity`):**
-  - `absBeat:Float`: Source of truth. Never changes when grid layout changes.
-  - `offsetMs:Float`: Timing offset in ms (for PlayState).
-  - Length: Always fixed to 1/8 of a beat, regardless of current `subBeat`.
-- **Save (M5.1):** `EditorState` reads `noteLayer.getAll()`. Converts `absBeat` to `time`, calculates `strength` via `TimeSignature`, exports `offsetMs` as `offset`. Writes to JSON.
+- **Architecture:** `EditorState` orchestrates. Editor UI split by size, not reusability.
+- **EditorGrid:** Owns geometry + input. Each cell is a `Grid` sprite with `FlxMouseEvent`.
+  - On click: compute `absBeat = currentBar * beatsPerMeasure + col * subBeat`.
+  - Create `NoteEntity`, set `line/absBeat/x/y`, call `noteLayer.add(note)`.
+  - Owns `currentBar` setter → pushes to `noteLayer.currentBar`.
+  - Owns `beatsPerMeasure` setter → pushes to `noteLayer.beatsPerMeasure`.
+  - Holds ref to `noteLayer` (one-way: Grid knows Layer, Layer does NOT know Grid).
+- **NoteLayer:** Container + logic.
+  - Holds notes in `members` (FlxTypedSpriteGroup).
+  - `add()` override attaches `FlxMouseEvent` for hover/out/toggle.
+  - `refreshVisuals()`: `note.visible = (note.getBar(beatsPerMeasure) == currentBar)`.
+  - Does NOT read Grid. Receives `currentBar` and `beatsPerMeasure` via setters.
+  - Hover events dispatched via callback (to be wired to Panel later).
+- **NoteEntity:** `line`, `absBeat`, `offsetMs`. Methods `getBar(bpm)`, `getStepBeat(bpm)`.
+
 
 ## 3. Persistence
 
