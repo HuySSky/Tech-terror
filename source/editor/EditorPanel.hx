@@ -31,6 +31,7 @@ class EditorPanel extends FlxTypedSpriteGroup<FlxSprite>
 	var bpmText:FlxText;
 	var scrollText:FlxText;
 	var diffText:FlxText;
+	var hoverText:FlxText;
 
 	var bpmDown:FlxText;
 	var bpmUp:FlxText;
@@ -74,6 +75,7 @@ class EditorPanel extends FlxTypedSpriteGroup<FlxSprite>
 
 		saveBtn = label(x, y + ROW_PITCH * 4, 0, "[ SAVE ]");
 		loadBtn = label(x + 160, y + ROW_PITCH * 4, 0, "[ LOAD ]");
+		hoverText = label(x, y + ROW_PITCH * 5, 800, "");
 	}
 
 	public function init(initialBpm:Float, initialScrollSpeed:Float, initialDiff:String):Void
@@ -108,6 +110,11 @@ class EditorPanel extends FlxTypedSpriteGroup<FlxSprite>
 		else if (FlxG.mouse.overlaps(loadBtn))
 		{}
 		// onLoad.dispatch();
+	}
+
+	public function updateHover(note:Null<NoteEntity>, beatsPerMeasure:Int):Void
+	{
+		hoverText.text = note == null ? "" : '${note.line} | Bar ${note.getBar(beatsPerMeasure) + 1} | Beat ${note.getStepBeat(beatsPerMeasure) + 1} | ${note.offsetMs}ms';
 	}
 
 	public function updateInfo(bar:Int, totalBars:Int, beatsPerMeasure:Int):Void

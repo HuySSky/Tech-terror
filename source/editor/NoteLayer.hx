@@ -10,7 +10,7 @@ class NoteLayer extends FlxTypedSpriteGroup<NoteEntity>
 	public var beatsPerMeasure:Int = 4;
 
     // Hover state
-    var lastHovered:NoteEntity = null;
+	public var lastHovered(default, null):Null<NoteEntity> = null;
 
     public function new() { 
         super(); 
@@ -19,6 +19,7 @@ class NoteLayer extends FlxTypedSpriteGroup<NoteEntity>
     override public function update(elapsed:Float)
     {
 		super.update(elapsed);
+
     }
 
     override public function add(note: NoteEntity):NoteEntity
@@ -29,8 +30,9 @@ class NoteLayer extends FlxTypedSpriteGroup<NoteEntity>
 
 	public function findAt(line:String, absBeat:Float, eps:Float):Null<NoteEntity>
 	{
-		for (note in members)
+		for (i in 0...length)
 		{
+			var note = members[i];
 			if (note.line == line && Math.abs(note.absBeat - absBeat) < eps)
 				return note;
 		}
@@ -39,18 +41,21 @@ class NoteLayer extends FlxTypedSpriteGroup<NoteEntity>
 
 	public function removeNote(note:NoteEntity):Void
 	{
+		if (lastHovered == note)
+			lastHovered = null;
 		FlxMouseEvent.remove(note);
 		remove(note, true);
 		note.destroy();
-		// refreshVisuals();
+		refreshVisuals();
 	}
 
     function onNoteHover(note: NoteEntity):Void {
-        // Gọi onHover.dispatch(note)
+		lastHovered = note;
     }
 
     function onNoteOut(note: NoteEntity):Void {
-        // Gọi onHoverEnd.dispatch()
+		if (lastHovered == note)
+			lastHovered = null;
     }
 
     // // 4. Logic Xóa theo Line
@@ -66,17 +71,6 @@ class NoteLayer extends FlxTypedSpriteGroup<NoteEntity>
 			note.visible = note.getBar(beatsPerMeasure) == currentBar;
 		}
 	}
-
-    // // 6. Logic Hover
-    // override public function update(elapsed:Float):Void {
-    //     super.update(elapsed);
-    //     // Nếu mouse.justMoved hoặc justPressed:
-    //     // Tìm xem chuột có overlaps với entity nào đang visible không.
-    //     // Nếu hovered != lastHovered:
-    //     //   - Nếu lastHovered != null -> onHoverEnd.dispatch()
-    //     //   - Nếu hovered != null -> onHover.dispatch(hovered)
-    //     //   - Gán lastHovered = hovered
-    // }
 
     // // 7. Getter cho Save
     // public function getAll():Array<NoteEntity> {

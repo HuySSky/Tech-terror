@@ -68,6 +68,13 @@ class EditorState extends FlxState
 			navigate(1);
 		else if (FlxG.keys.justPressed.ESCAPE)
 			FlxG.switchState(MenuState.new);
+
+		var shownHover:Null<NoteEntity> = null;
+		if (layer.lastHovered != shownHover)
+		{
+			shownHover = layer.lastHovered;
+			panel.updateHover(shownHover, beatsPerMeasure);
+		}
 	}
 
 	function navigate(dir:Int):Void
