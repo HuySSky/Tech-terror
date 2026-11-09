@@ -18,21 +18,32 @@ class NoteLayer extends FlxTypedSpriteGroup<NoteEntity>
 
     override public function update(elapsed:Float)
     {
-        super.update(elapsed);
-
-
+		super.update(elapsed);
     }
 
     override public function add(note: NoteEntity):NoteEntity
     {
-		FlxMouseEvent.add(note, null, toggle, onNoteHover, onNoteOut);
+		FlxMouseEvent.add(note, null, null, onNoteHover, onNoteOut);
         return super.add(note);
     }
 
-    // 3. Logic Toggle (Xóa)
-    function toggle(note: NoteEntity):Void {
-		note.kill();
-    }
+	public function findAt(line:String, absBeat:Float, eps:Float):Null<NoteEntity>
+	{
+		for (note in members)
+		{
+			if (note.line == line && Math.abs(note.absBeat - absBeat) < eps)
+				return note;
+		}
+		return null;
+	}
+
+	public function removeNote(note:NoteEntity):Void
+	{
+		FlxMouseEvent.remove(note);
+		remove(note, true);
+		note.destroy();
+		// refreshVisuals();
+	}
 
     function onNoteHover(note: NoteEntity):Void {
         // Gọi onHover.dispatch(note)

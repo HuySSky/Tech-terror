@@ -76,6 +76,13 @@ class EditorGrid extends FlxTypedSpriteGroup<FlxSprite>
 		var absoluteTime = currentBar * beatsPerMeasure + col * subBeat;
 		if (noteLayer != null)
 		{
+			var existing = noteLayer.findAt(lines[row], absoluteTime, subBeat / 2);
+			if (existing != null)
+			{
+				noteLayer.removeNote(existing);
+				return;
+			}
+
 			var note = noteLayer.recycle(NoteEntity.new);
 
 			note.line = lines[row];
