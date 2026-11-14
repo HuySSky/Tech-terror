@@ -27,6 +27,7 @@ class EditorState extends FlxState
 		super();
 		this.songData = songData;
 		this.difficulty = difficulty;
+		Instruments.loadAll();
 	}
 
 	override public function create():Void
@@ -55,6 +56,7 @@ class EditorState extends FlxState
 		add(layer);
 		
 		grid.noteLayer = layer;
+		grid.onIconClick = row -> openInstrumentPicker(row);
 		panel.updateInfo(grid.currentBar, totalBars, beatsPerMeasure);
 	}
 
@@ -81,5 +83,10 @@ class EditorState extends FlxState
 	{
 		grid.currentBar += dir;
 		panel.updateInfo(grid.currentBar, totalBars, beatsPerMeasure);
+	}
+
+	function openInstrumentPicker(row:Int):Void
+	{
+		openSubState(new InstrumentPickerState(name -> grid.applyRename(row, name)));
 	}
 } 

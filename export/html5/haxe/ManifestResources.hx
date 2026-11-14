@@ -77,7 +77,7 @@ import sys.FileSystem;
 
 		var data, manifest, library, bundle;
 
-		data = '{"name":null,"assets":"aoy4:pathy34:assets%2Fdata%2Fdata-goes-here.txty4:sizezy4:typey4:TEXTy2:idR1y7:preloadtgoR0y36:assets%2Fimages%2Fimages-go-here.txtR2zR3R4R5R7R6tgoR0y36:assets%2Fmusic%2Fmusic-goes-here.txtR2zR3R4R5R8R6tgoR0y50:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean.jpgR2i115762R3y5:IMAGER5R9R6tgoR2i4735418R3y5:MUSICR5y50:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean.mp3y9:pathGroupaR12hR6tgoR0y56:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean_data.jsonR2i257R3R4R5R14R6tgoR0y99:assets%2Fsongs%2FBillie%20Jean%2FMichael%20Jackson%20-%20Billie%20Jean%20%28Official%20Video%29.mp4R2i17502597R3y6:BINARYR5R15R6tgoR0y26:assets%2Fsongs%2Fsongs.txtR2i12R3R4R5R17R6tgoR0y36:assets%2Fsounds%2Fsounds-go-here.txtR2zR3R4R5R18R6tgoR2i8220R3R11R5y26:flixel%2Fsounds%2Fbeep.mp3R13aR19y26:flixel%2Fsounds%2Fbeep.ogghR6tgoR2i39706R3R11R5y28:flixel%2Fsounds%2Fflixel.mp3R13aR21y28:flixel%2Fsounds%2Fflixel.ogghR6tgoR2i6840R3y5:SOUNDR5R20R13aR19R20hgoR2i33629R3R23R5R22R13aR21R22hgoR2i15744R3y4:FONTy9:classNamey35:__ASSET__flixel_fonts_nokiafc22_ttfR5y30:flixel%2Ffonts%2Fnokiafc22.ttfR6tgoR2i29724R3R24R25y36:__ASSET__flixel_fonts_monsterrat_ttfR5y31:flixel%2Ffonts%2Fmonsterrat.ttfR6tgoR0y33:flixel%2Fimages%2Fui%2Fbutton.pngR2i222R3R10R5R30R6tgoR0y36:flixel%2Fimages%2Flogo%2Fdefault.pngR2i484R3R10R5R31R6tgh","rootPath":null,"version":2,"libraryArgs":[],"libraryType":null}';
+		data = '{"name":null,"assets":"aoy4:pathy34:assets%2Fdata%2Fdata-goes-here.txty4:sizezy4:typey4:TEXTy2:idR1y7:preloadtgoR0y27:assets%2Fimages%2Fbongo.pngR2i685R3y5:IMAGER5R7R6tgoR0y29:assets%2Fimages%2Fcowbell.pngR2i712R3R8R5R9R6tgoR0y28:assets%2Fimages%2FCymbal.pngR2i822R3R8R5R10R6tgoR0y32:assets%2Fimages%2Fdrumsticks.pngR2i956R3R8R5R11R6tgoR0y38:assets%2Fimages%2Finstruments_name.txtR2i28R3R4R5R12R6tgoR0y26:assets%2Fimages%2FKick.pngR2i1010R3R8R5R13R6tgoR0y29:assets%2Fimages%2Fmaracas.pngR2i1228R3R8R5R14R6tgoR0y27:assets%2Fimages%2FSnare.pngR2i825R3R8R5R15R6tgoR0y32:assets%2Fimages%2Ftambourine.pngR2i1017R3R8R5R16R6tgoR0y30:assets%2Fimages%2Ftriangle.pngR2i803R3R8R5R17R6tgoR0y31:assets%2Fimages%2Fxylophone.pngR2i900R3R8R5R18R6tgoR0y36:assets%2Fmusic%2Fmusic-goes-here.txtR2zR3R4R5R19R6tgoR0y50:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean.jpgR2i115762R3R8R5R20R6tgoR2i4735418R3y5:MUSICR5y50:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean.mp3y9:pathGroupaR22hR6tgoR0y56:assets%2Fsongs%2FBillie%20Jean%2FBillie%20Jean_data.jsonR2i257R3R4R5R24R6tgoR0y99:assets%2Fsongs%2FBillie%20Jean%2FMichael%20Jackson%20-%20Billie%20Jean%20%28Official%20Video%29.mp4R2i17502597R3y6:BINARYR5R25R6tgoR0y26:assets%2Fsongs%2Fsongs.txtR2i12R3R4R5R27R6tgoR0y36:assets%2Fsounds%2Fsounds-go-here.txtR2zR3R4R5R28R6tgoR2i8220R3R21R5y26:flixel%2Fsounds%2Fbeep.mp3R23aR29y26:flixel%2Fsounds%2Fbeep.ogghR6tgoR2i39706R3R21R5y28:flixel%2Fsounds%2Fflixel.mp3R23aR31y28:flixel%2Fsounds%2Fflixel.ogghR6tgoR2i6840R3y5:SOUNDR5R30R23aR29R30hgoR2i33629R3R33R5R32R23aR31R32hgoR2i15744R3y4:FONTy9:classNamey35:__ASSET__flixel_fonts_nokiafc22_ttfR5y30:flixel%2Ffonts%2Fnokiafc22.ttfR6tgoR2i29724R3R34R35y36:__ASSET__flixel_fonts_monsterrat_ttfR5y31:flixel%2Ffonts%2Fmonsterrat.ttfR6tgoR0y33:flixel%2Fimages%2Fui%2Fbutton.pngR2i222R3R8R5R40R6tgoR0y36:flixel%2Fimages%2Flogo%2Fdefault.pngR2i484R3R8R5R41R6tgh","rootPath":null,"version":2,"libraryArgs":[],"libraryType":null}';
 		manifest = AssetManifest.parse (data, rootPath);
 		library = AssetLibrary.fromManifest (manifest);
 		Assets.registerLibrary ("default", library);
@@ -97,7 +97,17 @@ import sys.FileSystem;
 #if flash
 
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_data_data_goes_here_txt extends null { }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_images_go_here_txt extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_bongo_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_cowbell_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_cymbal_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_drumsticks_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_instruments_name_txt extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_kick_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_maracas_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_snare_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_tambourine_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_triangle_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_xylophone_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_music_music_goes_here_txt extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_songs_billie_jean_billie_jean_jpg extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_songs_billie_jean_billie_jean_mp3 extends null { }
@@ -119,7 +129,17 @@ import sys.FileSystem;
 #elseif (desktop || cpp)
 
 @:keep @:file("assets/data/data-goes-here.txt") @:noCompletion #if display private #end class __ASSET__assets_data_data_goes_here_txt extends haxe.io.Bytes {}
-@:keep @:file("assets/images/images-go-here.txt") @:noCompletion #if display private #end class __ASSET__assets_images_images_go_here_txt extends haxe.io.Bytes {}
+@:keep @:image("assets/images/bongo.png") @:noCompletion #if display private #end class __ASSET__assets_images_bongo_png extends lime.graphics.Image {}
+@:keep @:image("assets/images/cowbell.png") @:noCompletion #if display private #end class __ASSET__assets_images_cowbell_png extends lime.graphics.Image {}
+@:keep @:image("assets/images/Cymbal.png") @:noCompletion #if display private #end class __ASSET__assets_images_cymbal_png extends lime.graphics.Image {}
+@:keep @:image("assets/images/drumsticks.png") @:noCompletion #if display private #end class __ASSET__assets_images_drumsticks_png extends lime.graphics.Image {}
+@:keep @:file("assets/images/instruments_name.txt") @:noCompletion #if display private #end class __ASSET__assets_images_instruments_name_txt extends haxe.io.Bytes {}
+@:keep @:image("assets/images/Kick.png") @:noCompletion #if display private #end class __ASSET__assets_images_kick_png extends lime.graphics.Image {}
+@:keep @:image("assets/images/maracas.png") @:noCompletion #if display private #end class __ASSET__assets_images_maracas_png extends lime.graphics.Image {}
+@:keep @:image("assets/images/Snare.png") @:noCompletion #if display private #end class __ASSET__assets_images_snare_png extends lime.graphics.Image {}
+@:keep @:image("assets/images/tambourine.png") @:noCompletion #if display private #end class __ASSET__assets_images_tambourine_png extends lime.graphics.Image {}
+@:keep @:image("assets/images/triangle.png") @:noCompletion #if display private #end class __ASSET__assets_images_triangle_png extends lime.graphics.Image {}
+@:keep @:image("assets/images/xylophone.png") @:noCompletion #if display private #end class __ASSET__assets_images_xylophone_png extends lime.graphics.Image {}
 @:keep @:file("assets/music/music-goes-here.txt") @:noCompletion #if display private #end class __ASSET__assets_music_music_goes_here_txt extends haxe.io.Bytes {}
 @:keep @:image("assets/songs/Billie Jean/Billie Jean.jpg") @:noCompletion #if display private #end class __ASSET__assets_songs_billie_jean_billie_jean_jpg extends lime.graphics.Image {}
 @:keep @:file("assets/songs/Billie Jean/Billie Jean.mp3") @:noCompletion #if display private #end class __ASSET__assets_songs_billie_jean_billie_jean_mp3 extends haxe.io.Bytes {}

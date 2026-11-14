@@ -1,0 +1,4 @@
+Kick
+Snare
+Cymbal
+Hihat

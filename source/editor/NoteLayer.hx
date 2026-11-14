@@ -24,7 +24,7 @@ class NoteLayer extends FlxTypedSpriteGroup<NoteEntity>
 
     override public function add(note: NoteEntity):NoteEntity
     {
-		FlxMouseEvent.add(note, null, null, onNoteHover, onNoteOut);
+		FlxMouseEvent.add(note, null, removeNote, onNoteHover, onNoteOut);
         return super.add(note);
     }
 
@@ -41,21 +41,17 @@ class NoteLayer extends FlxTypedSpriteGroup<NoteEntity>
 
 	public function removeNote(note:NoteEntity):Void
 	{
-		if (lastHovered == note)
-			lastHovered = null;
-		FlxMouseEvent.remove(note);
-		remove(note, true);
-		note.destroy();
-		refreshVisuals();
+		lastHovered = null;
+		note.kill();
 	}
 
     function onNoteHover(note: NoteEntity):Void {
 		lastHovered = note;
     }
 
-    function onNoteOut(note: NoteEntity):Void {
-		if (lastHovered == note)
-			lastHovered = null;
+	function onNoteOut(note:NoteEntity):Void
+	{
+		lastHovered = null;
     }
 
     // // 4. Logic Xóa theo Line

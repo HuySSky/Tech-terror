@@ -1,5 +1,15 @@
 export/html5/bin/assets/data/data-goes-here.txt
-export/html5/bin/assets/images/images-go-here.txt
+export/html5/bin/assets/images/bongo.png
+export/html5/bin/assets/images/cowbell.png
+export/html5/bin/assets/images/Cymbal.png
+export/html5/bin/assets/images/drumsticks.png
+export/html5/bin/assets/images/instruments_name.txt
+export/html5/bin/assets/images/Kick.png
+export/html5/bin/assets/images/maracas.png
+export/html5/bin/assets/images/Snare.png
+export/html5/bin/assets/images/tambourine.png
+export/html5/bin/assets/images/triangle.png
+export/html5/bin/assets/images/xylophone.png
 export/html5/bin/assets/music/music-goes-here.txt
 export/html5/bin/assets/songs/Billie Jean/Billie Jean.jpg
 export/html5/bin/assets/songs/Billie Jean/Billie Jean.mp3
